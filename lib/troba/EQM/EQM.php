@@ -315,8 +315,8 @@ class EQM extends PDOWrapper
     /**
      * @param array|string|object $queryParams depends on the parameter type
      * @param string $paramType optional default is EQM::QUERY_TYPE_QUERY
-     * @return ResultSet|Query
      * @throws EQMException
+     * @return ResultSet|Query
      */
     public static function query($queryParams = null, $paramType = self::QUERY_TYPE_QUERY)
     {

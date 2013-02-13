@@ -136,8 +136,8 @@ class PDOWrapper
      * @param array $params optional if the statement needs parameter
      * @param bool $lastInsertedId optional perform lastInsertedId after execution
      *
-     * @return bool|int return a boolean or the last inserted id
      * @throws EQMException
+     * @return bool|int return a boolean or the last inserted id
      */
     public static function nativeExecute($sql, $params = [], $lastInsertedId = false)
     {
@@ -163,8 +163,8 @@ class PDOWrapper
      * @param string $sql a valid sql statement that returns results
      * @param array $params optional if the statement needs parameters
      *
-     * @return ResultSetInterface set of objects - the result class is defined in $objectOrClass
      * @throws EQMException
+     * @return ResultSetInterface set of objects - the result class is defined in $objectOrClass
      */
     public static function nativeQuery($objectOrClass, $sql = null, $params = [])
     {
