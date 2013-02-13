@@ -21,8 +21,9 @@ EQM::initialize([
     'password' => 'root',
     EQM::RUN_MODE => EQM::DEV_MODE,
 ]);
+
 /**
- * Assuming a databse table Company with id, name, remark as fields
+ * Assuming a database table Company with id, name, remark as fields
  */
 class Company
 {
