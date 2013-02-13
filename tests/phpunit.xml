@@ -1,13 +1,13 @@
-<phpunit bootstrap="./Scandio/ORM/bootstrap.php">
+<phpunit bootstrap="./troba/EQM/bootstrap.php">
     <testsuites>
         <testsuite name="troba Test Suite">
-            <file>./Scandio/Utils/StringUtilsTest.php</file>
-            <file>./Scandio/ORM/ConventionHandlerTest.php</file>
-            <file>./Scandio/ORM/ORMQueryArrayTest.php</file>
-            <file>./Scandio/ORM/ORMInsertTest.php</file>
-            <file>./Scandio/ORM/ORMUpdateTest.php</file>
-            <file>./Scandio/ORM/ORMDeleteTest.php</file>
-            <file>./Scandio/ORM/ORMTransactionTest.php</file>
+            <file>./troba/Utils/StringUtilsTest.php</file>
+            <file>./troba/EQM/ConventionHandlerTest.php</file>
+            <file>./troba/EQM/EQMQueryArrayTest.php</file>
+            <file>./troba/EQM/EQMInsertTest.php</file>
+            <file>./troba/EQM/EQMUpdateTest.php</file>
+            <file>./troba/EQM/EQMDeleteTest.php</file>
+            <file>./troba/EQM/EQMTransactionTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
