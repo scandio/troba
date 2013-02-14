@@ -222,6 +222,19 @@ $company = EQM::query('Company')
 
 Now `$company` contains the first entity for the given query.
 
+If you want to query data without a association to a model class you do it this way.
+
+```php
+$result = EQM::query()->select('name, remark')
+    ->from('Company')
+    ->where('name = ?', 'Scandio GmbH')
+    ->orderBy('id')
+    ->result()
+    ->all();
+```
+
+The result is an object (StdClass) containing all required properties.
+
 ### Native query
 
 ```php
