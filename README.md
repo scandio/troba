@@ -119,7 +119,7 @@ If you don't like use long class names you're allowed to use an instance instead
 ```php
 use \Your\Namespace\Company;
 
-$c = EQM::queryOneByPrimary(new Company, 34);
+$c = EQM::queryOneByPrimary(new Company(), 34);
 ```
 
 It's cool - isn't it?
@@ -139,7 +139,7 @@ EQM::update($c);
 To delete an entity you call the EQM::delete() method.
 
 ```php
-$c = EQM::queryOneByPrimary(new Company, 34);
+$c = EQM::queryOneByPrimary(new Company(), 34);
 EQM::delete($c);
 ```
 
