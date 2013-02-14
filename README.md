@@ -1,9 +1,11 @@
 troba
 =====
 
-troba is a easy to use and extensible PHP (5.4) entity and query manager based on PDO
+troba is a easy to use and extensible PHP (5.4) entity and query manager based on PDO.
 
 ## Set up troba
+
+You can install troba via composer. Or you download it.
 
 Here's an example:
 ```php
@@ -144,6 +146,53 @@ EQM::delete($c);
 ```
 
 That's all from the basic CRUD operations.
+
+## Querying entities
+
+There are four possibilities to query entities.
+
+* Query by array
+* Query by JSON
+* Query by object
+* Native query
+
+### Query by array
+
+The method EQM::query has a special query type parameter.
+
+```php
+$companies = EQM::query([
+    'entity' => new Company(),
+    'query' => 'name = :name',
+    'params' => ['name' => 'Scandio GmbH']
+], EQM::QUERY_TYPE_ARRAY);
+
+echo $companies->count() . PHP_EOL;
+
+foreach ($companies as $company) {
+    echo $company->name . ' ' . $company->remark . PHP_EOL;
+}
+```
+
+The $companies variable does not contain all object. It's only the database cursor.
+This is important for a efficient memory management. First in the foreach() loop the
+fetches will be done.
+
+If you want to fetch all entities in an array use the all() method.
+
+```php
+$companies = EQM::query([
+    'entity' => new Company(),
+    'query' => 'name = :name',
+    'params' => ['name' => 'Scandio GmbH']
+], EQM::QUERY_TYPE_ARRAY)->all();
+
+foreach ($companies as $company) {
+    echo $company->name . ' ' . $company->remark . PHP_EOL;
+}
+```
+
+In this case $companies in an array.
 
 ## License
 
