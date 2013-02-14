@@ -214,10 +214,21 @@ Query by object creates an object of the Query class. Each method expect `result
 `all()`, `one()` returns the query object itself so chaining is possible.
 
 ```php
-$company = EQM::query('Company')->where('name = ?', 'Scandio GmbH')->result()->one();
+$company = EQM::query('Company')
+    ->where('name = ?', 'Scandio GmbH')
+    ->result()
+    ->one();
 ```
 
+Now `$company` contains the first entity for the given query.
 
+### Native query
+
+```php
+$company = EQM::nativeQuery('Company', 'SELECT * FROM company WHERE name = ?', 'Scandio GmbH')->one();
+```
+
+This query is a pure SQL statement. The result is the same as above mentioned.
 
 ## License
 
