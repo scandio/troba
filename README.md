@@ -194,6 +194,31 @@ foreach ($companies as $company) {
 
 In this case `$companies` in an array.
 
+### Query by JSON
+
+It's nearly the same as query by array.
+
+```php
+$companies = EQM::query('{
+    "entity": "Company",
+    "query": "name = :name",
+    "params": {"name": "Scandio GmbH"}
+}', EQM::QUERY_TYPE_JSON)->all();
+```
+
+Just another syntax.
+
+### Query by object
+
+Query by object creates an object of the Query class. Each method expect `result()`,
+`all()`, `one()` returns the query object itself so chaining is possible.
+
+```php
+$company = EQM::query('Company')->where('name = ?', 'Scandio GmbH')->result()->one();
+```
+
+
+
 ## License
 
 Copyright (c) Scandio <http://https://github.com/scandio/>
