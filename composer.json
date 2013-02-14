@@ -1,0 +1,25 @@
+{
+    "name": "scandio/troba",
+    "type": "library",
+    "description": "troba is a easy to use and extensible PHP (5.4) entity and query manager based on PDO",
+    "keywords": ["php", "library", "pdo", "orm", "db", "scandio"],
+    "homepage": "https://github.com/scandio/troba",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "Scandio GmbH",
+            "homepage": "http://www.scandio.de/"
+        }
+    ],
+
+    "require": {
+        "php":                      ">=5.4"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "troba": ""
+        }
+    }
+}
