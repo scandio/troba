@@ -99,7 +99,7 @@ $c->remark = 'Software & Consulting';
 EQM::insert($c);
 ```
 
-In this case you do not need to define a property __table because the class name
+In this case you do not need to define a property `__table` because the class name
 tells the system the table name. It's possible to define you own convention handler
 that results a specific table name for a class name.
 
@@ -138,7 +138,7 @@ EQM::update($c);
 
 ### Delete an entity
 
-To delete an entity you call the EQM::delete() method.
+To delete an entity you call the `EQM::delete()` method.
 
 ```php
 $c = EQM::queryOneByPrimary(new Company(), 34);
@@ -158,7 +158,7 @@ There are four possibilities to query entities.
 
 ### Query by array
 
-The method EQM::query has a special query type parameter.
+The method `EQM::query()` has a special query type parameter.
 
 ```php
 $companies = EQM::query([
@@ -174,11 +174,11 @@ foreach ($companies as $company) {
 }
 ```
 
-The $companies variable does not contain all object. It's only the database cursor.
-This is important for a efficient memory management. First in the foreach() loop the
+The `$companies` variable does not contain all object. It's only the database cursor.
+This is important for a efficient memory management. First in the `foreach()` loop the
 fetches will be done.
 
-If you want to fetch all entities in an array use the all() method.
+If you want to fetch all entities in an array use the `all()` method.
 
 ```php
 $companies = EQM::query([
@@ -192,7 +192,7 @@ foreach ($companies as $company) {
 }
 ```
 
-In this case $companies in an array.
+In this case `$companies` in an array.
 
 ## License
 
