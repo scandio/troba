@@ -313,6 +313,8 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * The troba (E)ntity (Q)uery (M)anager
+     *
      * @param array|string|object $queryParams depends on the parameter type
      * @param string $paramType optional default is EQM::QUERY_TYPE_QUERY
      * @throws EQMException
