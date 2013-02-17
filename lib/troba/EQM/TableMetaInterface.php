@@ -4,13 +4,6 @@ namespace troba\EQM;
 
 interface TableMetaInterface
 {
-    const STRING = 'string';
-    const INT = 'int';
-    const FLOAT = 'float';
-    const DECIMAL = 'decimal';
-    const BOOLEAN = 'boolean';
-    const DATE_TIME = 'date_time';
-
     /**
      * @param \StdClass[] $data
      */
