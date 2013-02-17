@@ -41,12 +41,34 @@ class MySqlBuilder implements SqlBuilderInterface
         return "UPDATE {$table->table} {$table->alias} SET " . implode(', ', $setFields) . " WHERE {$query}";
     }
 
+    /**
+     * Returns a SQL statment for deleting records in a table
+     *
+     * @param string $table the table name with an alias
+     * @param string $query optional the query the defines the records to be deleted
+     * @return string the DELETE SQL statement with parameters
+     */
     public function delete($table, $query = null)
     {
         $table = $this->tableNameDef($table);
         return "DELETE FROM {$table->table}" . (!is_null($query) ? " WHERE {$query}" : "");
     }
 
+    /**
+     * Returns a SELECT SQL statement for the given parameters
+     *
+     * @param string $table
+     * @param string $fields
+     * @param string $from optional
+     * @param array $joins optional array of joins
+     * @param string $query otpional a where query
+     * @param array|string $group optional a group string or an array if multiple
+     * @param string $having optional a having query
+     * @param array|string $order optional a order string or an array if multiple
+     * @param int $limit optional the number of records to be returned
+     * @param int $offset optional hte start position
+     * @return string the SELECT SQL statement
+     */
     public function select($table, $fields, $from = null, $joins = [], $query = null, $group = [],
                            $having = null, $order = [], $limit = null, $offset = null)
     {
@@ -77,8 +99,10 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for dropping a table
+     *
      * @param string $table
-     * @return string
+     * @return string DROP TABLE SQL statement
      */
     public function drop($table)
     {
@@ -86,9 +110,11 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for creating a table
+     *
      * @param string $table
-     * @param array $columns
-     * @return string
+     * @param array $columns [<name>, [<column definition>]]
+     * @return string CREATE TABLE SQL statement
      */
     public function create($table, $columns = [])
     {
@@ -106,10 +132,12 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for altering a table
+     *
      * @param string $table
      * @param string $column
      * @param array|string $definition
-     * @return string
+     * @return string ALTER TABLE statement
      */
     public function addColumn($table, $column, $definition)
     {
@@ -117,9 +145,9 @@ class MySqlBuilder implements SqlBuilderInterface
             "ADD {$column}{$this->getColumnDef($definition)}";
     }
 
-    /**
+    /** Returns a SQL language part for different indexes
      * @param string $indexType
-     * @return string
+     * @return string the converted string for the SQL statement
      */
     protected function getIndexCommand($indexType)
     {
@@ -134,10 +162,12 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for adding an index to a table
+     *
      * @param string $table
      * @param array $columns
      * @param string $indexType optional [index|unique|primary]
-     * @return string
+     * @return string ALTER TABLE SQL statement
      */
     public function addIndex($table, $columns, $indexType = 'index')
     {
