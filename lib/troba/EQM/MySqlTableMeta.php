@@ -10,17 +10,17 @@ class MySqlTableMeta implements TableMetaInterface
     /**
      * @var ColumnMeta[]
      */
-    protected  $columns = [];
+    protected $columns = [];
 
     /**
      * @var array
      */
-    protected  $primaries = [];
+    protected $primaries = [];
 
     /**
      * @var null|string
      */
-    protected  $autoIncrement = null;
+    protected $autoIncrement = null;
 
     /**
      * @param \StdClass[] $columns
