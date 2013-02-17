@@ -45,7 +45,7 @@ trait Persisters
     {
         $tableMeta = \troba\EQM\EQM::tableMeta($this);
         if ($tableMeta->hasAutoIncrement()) {
-            if (is_null($this->{$tableMeta->getAutoIncrement()})) {
+            if (empty($this->{$tableMeta->getAutoIncrement()})) {
                 return $this->insert();
             } else {
                 return $this->update();

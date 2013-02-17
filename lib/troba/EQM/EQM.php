@@ -399,7 +399,7 @@ class EQM extends PDOWrapper
      */
     protected static function handleEvent($event, $object)
     {
-        if (is_callable([$object, $event])) $object->{$event}();
+        if (method_exists($object, $event)) $object->{$event}();
     }
 
     /**
