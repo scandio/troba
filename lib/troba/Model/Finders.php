@@ -50,7 +50,6 @@ trait Finders
     /**
      * calling a method like findBy<property>() e.g. findByName()
      *
-     * TODO Remove or move to a special trait
      * @param string $name
      * @param array $args [ params, order, limit, offset ]
      * @return \troba\EQM\ResultSetInterface
@@ -59,7 +58,13 @@ trait Finders
     {
         $parts = explode('findBy', $name);
         if (count($parts) == 2 && empty($parts[0])) {
-            return static::findBy(lcfirst($parts[1]), $args[0], $args[1], $args[2], $args[3]);
+            return static::findBy(
+                lcfirst($parts[1]),
+                $args[0],
+                (isset($args[1])) ? $args[1] : null,
+                (isset($args[2])) ? $args[2] : null,
+                (isset($args[3])) ? $args[2] : null
+            );
         }
         return null;
     }
