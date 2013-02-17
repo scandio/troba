@@ -80,4 +80,18 @@ class EQMQueryObjectTest extends PHPUnit_Framework_TestCase
             ->result();
         $this->assertEquals(27, $result->count());
     }
+
+    public function testAliasing()
+    {
+        $result = EQM::query()->select('*')->from('Company Firma')->where('Firma.id = ?', 2)->result()->one();
+        $this->assertEquals(2, $result->id);
+
+        $result = EQM::query('Company Firma')
+            ->innerJoin('Project Projekt', 'Firma.id = Projekt.companyId')
+            ->innerJoin('ProjectActivity Aktivitaet', 'Projekt.id = Aktivitaet.projectId')
+            ->where('Aktivitaet.id = :id', ['id' => 100])
+            ->groupBy('Firma.id')
+            ->result();
+        $this->assertEquals(27, $result->count());
+    }
 }
