@@ -51,15 +51,11 @@ connection you have to call `activateConnection($connectionName)`. The following
 one database to another with a different convention handler that means another table naming.
 
 ```php
-<?php
-
 require_once '../troba/lib/troba/Util/ClassLoader.php';
 $loader = new \troba\Util\ClassLoader('troba', '../troba/lib');
 $loader->register();
 
 use troba\EQM\EQM;
-use troba\Model;
-
 
 // init the default connection
 EQM::initialize([
