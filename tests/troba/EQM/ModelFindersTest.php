@@ -24,17 +24,17 @@ class ModelFindersTest extends \PHPUnit_Framework_TestCase
 {
     public function testFind()
     {
-        $cq = EQM::queryOneByPrimary(new Company(), 2);
+        $cq = EQM::queryByPrimary(new Company(), 2);
         $cm = Company::find(2);
         $this->assertEquals($cq->id, $cm->id);
         $this->assertEquals($cq->name, $cm->name);
 
-        $pq = EQM::queryOneByPrimary(new Project(), '2_2_PROJECT');
+        $pq = EQM::queryByPrimary(new Project(), '2_2_PROJECT');
         $pm = Project::find('2_2_PROJECT');
         $this->assertEquals($pq->id, $pm->id);
         $this->assertEquals($pq->name, $pm->name);
 
-        $paq = EQM::queryOneByPrimary(new ProjectActivity(), ['id' => 100, 'projectId' => '2_2_PROJECT']);
+        $paq = EQM::queryByPrimary(new ProjectActivity(), ['id' => 100, 'projectId' => '2_2_PROJECT']);
         $pam = ProjectActivity::find(['id' => 100, 'projectId' => '2_2_PROJECT']);
         $this->assertEquals($paq->id, $pam->id);
         $this->assertEquals($paq->name, $pam->name);

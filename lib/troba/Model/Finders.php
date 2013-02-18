@@ -17,7 +17,7 @@ trait Finders
      */
     public static function find($primaries)
     {
-        return \troba\EQM\EQM::queryOneByPrimary(get_called_class(), $primaries);
+        return \troba\EQM\EQM::queryByPrimary(get_called_class(), $primaries);
     }
 
     /**

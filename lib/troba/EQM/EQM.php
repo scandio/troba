@@ -293,7 +293,7 @@ class EQM extends PDOWrapper
      * @param array|mixed $params
      * @return object
      */
-    public static function queryOneByPrimary($objectOrClass, $params)
+    public static function queryByPrimary($objectOrClass, $params)
     {
         $primaryQuery = static::primaryQuery($objectOrClass, $params);
         return static::query($objectOrClass)->where($primaryQuery->query, $primaryQuery->params)->one(1);
