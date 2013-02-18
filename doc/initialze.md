@@ -47,7 +47,7 @@ $config = [
 
 The first call of `initialize()` sets the `'default'` connection. With `initialize($config, $connectionName)`
 you can add another connection with adifferent name. If you want to use another conntection than the default
-connection you have to call àctivateConnection($connectionName)`. The following example shows a table copy from
+connection you have to call `activateConnection($connectionName)`. The following example shows a table copy from
 one database to another with a different convention handler that means another table naming.
 
 ```php
