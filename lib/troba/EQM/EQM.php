@@ -198,7 +198,9 @@ class EQM extends PDOWrapper
     {
         static::handleEvent('preDelete', $object);
         $primaryQuery = static::primaryQuery($object);
-        return static::deleteQuery($object, $primaryQuery->query, $primaryQuery->params);
+        $result = static::deleteQuery($object, $primaryQuery->query, $primaryQuery->params);
+        static::handleEvent('postDelete', $object);
+        return $result;
     }
 
     /**
