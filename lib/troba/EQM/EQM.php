@@ -296,22 +296,7 @@ class EQM extends PDOWrapper
     public static function queryOneByPrimary($objectOrClass, $params)
     {
         $primaryQuery = static::primaryQuery($objectOrClass, $params);
-        return static::queryOne([
-            'entity' => $objectOrClass,
-            'query' => $primaryQuery->query,
-            'params' => $primaryQuery->params
-        ], EQM::QUERY_TYPE_ARRAY);
-    }
-
-    /**
-     * @param array|string $queryParams depends on the parameter type
-     * @param string $paramsType optional default is EQM::QUERY_TYPE_ARRAY
-     * @return object
-     */
-    public static function queryOne($queryParams, $paramsType = self::QUERY_TYPE_ARRAY)
-    {
-        $queryParams['limit'] = 1;
-        return static::query($queryParams, $paramsType)->one();
+        return static::query($objectOrClass)->where($primaryQuery->query, $primaryQuery->params)->one(1);
     }
 
     /**
