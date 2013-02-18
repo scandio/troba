@@ -29,8 +29,8 @@ class name except a dedicated table name is given.
 If you want to have lowercase table names with an underscore instead of a
 camelCased syntax you need the ClassicConventionHandler.
 
-* Class name `Company` results company as table name
-* Class name `ProjectContact` results project_contact as table name
+* Class name `Company` results to `company` as table name
+* Class name `ProjectContact` results to `project_contact` as table name
 
 ## PrefixedConventionHandler
 
@@ -43,8 +43,8 @@ new PrefixedConventionHandler('wp_', new ClassicConventionHandler());
 
 This example results the following table name for the given class names
 
-* Company results to wp_company
-* ProjectContact results to wp_project_contact
+* Class name `Company` results to `wp_company`
+* Class name `ProjectContact` results to `wp_project_contact`
 
 ## Warning
 
