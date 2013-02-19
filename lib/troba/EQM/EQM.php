@@ -303,15 +303,17 @@ class EQM extends PDOWrapper
      *
      * Keys for the queryParams array:
      *
-     *      'entity' => object or class name
-     *      'fields' => table columns to be returned
-     *      'from' => object or class name
+     *      'entity' => object or class name - it is used as FROM if 'from' is not set
+     *      'fields' => table columns to be returned * is the default
+     *      'from' => object or class name it overrides FROM independent from 'entity'
      *      'join' => single join object created with EQM::join() or array of them
-     *      'query' => the WHERE part of the SQL statement
-     *      'params' => single value or array of values as paramter for the query
+     *      'query' => the WHERE part of the SQL statement with named or unnamed parameters
+     *      'params' => single value or array of values as paramter for the query the array
+     *                  MUST be associative if named parameters are used
      *      'group' => single string or array of strings for the GROUP BY part
      *      'having' => the HAVING part of the SQL statement
      *      'havingParams' => single value or array of values as parameter for the query
+     *                        the array MUST be associative if named parameters are used
      *      'order' => single string or array of strings for the ORDER BY part
      *      'limit' => number of records to be returned
      *      'offset' => start point for the records
