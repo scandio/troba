@@ -299,6 +299,23 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * Returns a SQL statement for a (joined) select
+     *
+     * Keys for the queryParams array:
+     *
+     *      'entity' => object or class name
+     *      'fields' => table columns to be returned
+     *      'from' => object or class name
+     *      'join' => single join object created with EQM::join() or array of them
+     *      'query' => the WHERE part of the SQL statement
+     *      'params' => single value or array of values as paramter for the query
+     *      'group' => single string or array of strings for the GROUP BY part
+     *      'having' => the HAVING part of the SQL statement
+     *      'havingParams' => single value or array of values as parameter for the query
+     *      'order' => single string or array of strings for the ORDER BY part
+     *      'limit' => number of records to be returned
+     *      'offset' => start point for the records
+     *
      * @param array $queryParams
      * @return ResultSetInterface
      */
@@ -328,9 +345,11 @@ class EQM extends PDOWrapper
     }
 
     /**
-     * @param string $type one of the constants
-     * @param object|string $toObjectOrClass object or class name
-     * @param string $query
+     * Builds an object for a table join
+     *
+     * @param string $type one of the constants [EQM::INNER_JOIN|EQM::LEFT_JOIN|EQM::RIGHT_JOIN]
+     * @param object|string $toObjectOrClass object or class name optional with an alias
+     * @param string $query the query that combines two table with a join
      * @return object
      */
     public static function join($type, $toObjectOrClass, $query)
@@ -339,7 +358,10 @@ class EQM extends PDOWrapper
     }
 
     /**
-     * @param object|string $objectOrClass
+     * Return the table name for a class name including the alias the assigned covention
+     * handler is used to get the table name
+     *
+     * @param object|string $objectOrClass [<Classname>|<Classname> <alias>|object]
      * @return string table name blank alias name
      */
     protected static function tableName($objectOrClass)

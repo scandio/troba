@@ -2,6 +2,9 @@
 
 namespace troba\EQM;
 
+/**
+ * an EQM with additional methods for database definition and migrations
+ */
 class DDL extends EQM
 {
     const INTEGER = 'integer';
