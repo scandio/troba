@@ -11,13 +11,7 @@ You can install troba via composer. Or you download it. Here's an example for a 
 {
     "require": {
         "scandio/troba": "dev-master",
-        "phpunit/phpunit": "3.7.*"
-    },
-	"repositories": [{
-		"type": "vcs",
-		"url": "https://github.com/scandio/troba.git"
-
-}]
+    }
 }
 ```
 
