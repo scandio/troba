@@ -5,7 +5,21 @@ troba is a easy to use and extensible PHP (5.4) entity and query manager based o
 
 ## Set up troba
 
-You can install troba via composer. Or you download it.
+You can install troba via composer. Or you download it. Here's an example for a `composer.json`
+
+```php
+{
+    "require": {
+        "scandio/troba": "dev-master",
+        "phpunit/phpunit": "3.7.*"
+    },
+	"repositories": [{
+		"type": "vcs",
+		"url": "https://github.com/scandio/troba.git"
+
+}]
+}
+```
 
 Here's an example:
 ```php
