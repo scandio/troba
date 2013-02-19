@@ -2,7 +2,7 @@
     "name": "scandio/troba",
     "type": "library",
     "description": "troba is a easy to use and extensible PHP (5.4) entity and query manager based on PDO",
-    "keywords": ["php", "library", "pdo", "orm", "db", "scandio"],
+    "keywords": ["php", "library", "pdo", "orm", "db", "dbal", "database", "mysql", "sqlite", "scandio"],
     "homepage": "https://github.com/scandio/troba",
     "license": "MIT",
 
