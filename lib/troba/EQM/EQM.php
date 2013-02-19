@@ -391,6 +391,7 @@ class EQM extends PDOWrapper
 
     /**
      * returns the table meta information as an object that implements TableMetaInterface
+     * all read information will be cached in a metaCache variable but only for the single request
      *
      * @param object|string $objectOrClass
      * @return TableMetaInterface
