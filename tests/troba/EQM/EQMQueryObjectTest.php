@@ -6,7 +6,7 @@ class EQMQueryObjectTest extends PHPUnit_Framework_TestCase
 {
     public function testDefaultSimpleQuery()
     {
-        $count = EQM::query(['entity' => 'Company'], EQM::QUERY_TYPE_ARRAY)->count();
+        $count = EQM::queryByArray(['entity' => 'Company'])->count();
         $result = EQM::query('Company')->result();
         $this->assertEquals($count, $result->count());
         $resultArray = $result->all();

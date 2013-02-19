@@ -158,23 +158,20 @@ That's all from the basic CRUD operations.
 
 ## Querying entities
 
-There are four possibilities to query entities.
+There are three possibilities to query entities.
 
 * Query by array
-* Query by JSON
 * Query by object
 * Native query
 
 ### Query by array
 
-The method `EQM::query()` has a special query type parameter.
-
 ```php
-$companies = EQM::query([
+$companies = EQM::queryByArray([
     'entity' => new Company(),
     'query' => 'name = :name',
     'params' => ['name' => 'Scandio GmbH']
-], EQM::QUERY_TYPE_ARRAY);
+]);
 
 echo $companies->count() . PHP_EOL;
 
@@ -194,7 +191,7 @@ $companies = EQM::query([
     'entity' => new Company(),
     'query' => 'name = :name',
     'params' => ['name' => 'Scandio GmbH']
-], EQM::QUERY_TYPE_ARRAY)->all();
+])->all();
 
 foreach ($companies as $company) {
     echo $company->name . ' ' . $company->remark . PHP_EOL;
@@ -202,20 +199,6 @@ foreach ($companies as $company) {
 ```
 
 In this case `$companies` in an array.
-
-### Query by JSON
-
-It's nearly the same as query by array.
-
-```php
-$companies = EQM::query('{
-    "entity": "Company",
-    "query": "name = :name",
-    "params": {"name": "Scandio GmbH"}
-}', EQM::QUERY_TYPE_JSON)->all();
-```
-
-Just another syntax.
 
 ### Query by object
 

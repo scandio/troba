@@ -1,5 +1,8 @@
 <?php
 
+use troba\EQM\EQM;
+use troba\EQM\EQMException;
+
 class EQMInsertTest extends PHPUnit_Framework_TestCase
 {
     public function testInsertDefault()
@@ -7,13 +10,13 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $c = new AnotherCompany();
         $c->name = 'A Company from testInsert()';
         $c->remark = 'A remark for A Company from testInsert()';
-        \troba\EQM\EQM::insert($c);
+        EQM::insert($c);
         $this->assertEquals(CNT_COMPANY + 1, $c->id);
 
         $c = new Company();
         $c->name = 'A Company from testInsert()';
         $c->remark = 'A remark for A Company from testInsert()';
-        \troba\EQM\EQM::insert($c);
+        EQM::insert($c);
         $this->assertEquals(CNT_COMPANY + 2, $c->id);
 
         $p = new Project();
@@ -21,23 +24,23 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $p->companyId = $c->id;
         $p->name = 'A project with the id ' . $p->id;
         $p->value = 1234.56;
-        \troba\EQM\EQM::insert($p);
-        $this->assertEquals($p->id, \troba\EQM\EQM::query([
+        EQM::insert($p);
+        $this->assertEquals($p->id, EQM::queryByArray([
             'entity' => new Project(),
             'query' => 'id = ?',
             'params' => $p->id
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
         $pa = new ProjectActivity();
         $pa->id = 999;
         $pa->projectId = $p->id;
         $pa->name = 'Activity for ' . $p->id . ' with ' . $pa->id;
-        \troba\EQM\EQM::insert($pa);
-        $this->assertEquals($pa->id, \troba\EQM\EQM::query([
+        EQM::insert($pa);
+        $this->assertEquals($pa->id, EQM::queryByArray([
             'entity' => new ProjectActivity(),
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
     }
 
     public function testInsertDefaultWithNamespace()
@@ -45,13 +48,13 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $c = new Bootstrap\AnotherCompany();
         $c->name = 'A Company from testInsert()';
         $c->remark = 'A remark for A Company from testInsert()';
-        \troba\EQM\EQM::insert($c);
+        EQM::insert($c);
         $this->assertEquals(CNT_COMPANY + 3, $c->id);
 
         $c = new Bootstrap\Company();
         $c->name = 'A Company from testInsert()';
         $c->remark = 'A remark for A Company from testInsert()';
-        \troba\EQM\EQM::insert($c);
+        EQM::insert($c);
         $this->assertEquals(CNT_COMPANY + 4, $c->id);
 
         $p = new Bootstrap\Project();
@@ -59,32 +62,32 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $p->companyId = $c->id;
         $p->name = 'A project with the id ' . $p->id;
         $p->value = 1234.56;
-        \troba\EQM\EQM::insert($p);
-        $this->assertEquals($p->id, \troba\EQM\EQM::query([
+        EQM::insert($p);
+        $this->assertEquals($p->id, EQM::queryByArray([
             'entity' => new Bootstrap\Project(),
             'query' => 'id = ?',
             'params' => $p->id
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
         $pa = new Bootstrap\ProjectActivity();
         $pa->id = 999;
         $pa->projectId = $p->id;
         $pa->name = 'Activity for ' . $p->id . ' with ' . $pa->id;
-        \troba\EQM\EQM::insert($pa);
-        $this->assertEquals($pa->id, \troba\EQM\EQM::query([
+        EQM::insert($pa);
+        $this->assertEquals($pa->id, EQM::queryByArray([
             'entity' => new Bootstrap\ProjectActivity(),
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
     }
     public function testInsertClassic()
     {
-        \troba\EQM\EQM::activateConnection('second_db');
+        EQM::activateConnection('second_db');
 
         $c = new Company();
         $c->name = 'A Company from testInsert()';
         $c->remark = 'A remark for A Company from testInsert()';
-        \troba\EQM\EQM::insert($c);
+        EQM::insert($c);
         $this->assertEquals(CNT_COMPANY + 1, $c->id);
 
         $p = new Project();
@@ -92,35 +95,35 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $p->companyId = $c->id;
         $p->name = 'A project with the id ' . $p->id;
         $p->value = 1234.56;
-        \troba\EQM\EQM::insert($p);
-        $this->assertEquals($p->id, \troba\EQM\EQM::query([
+        EQM::insert($p);
+        $this->assertEquals($p->id, EQM::queryByArray([
             'entity' => new Project(),
             'query' => 'id = ?',
             'params' => $p->id
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
         $pa = new ProjectActivity();
         $pa->id = 999;
         $pa->projectId = $p->id;
         $pa->name = 'Activity for ' . $p->id . ' with ' . $pa->id;
-        \troba\EQM\EQM::insert($pa);
-        $this->assertEquals($pa->id, \troba\EQM\EQM::query([
+        EQM::insert($pa);
+        $this->assertEquals($pa->id, EQM::queryByArray([
             'entity' => new ProjectActivity(),
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
-        \troba\EQM\EQM::activateConnection();
+        EQM::activateConnection();
     }
 
     public function testInsertClassicWithNamespace()
     {
-        \troba\EQM\EQM::activateConnection('second_db');
+        EQM::activateConnection('second_db');
 
         $c = new Bootstrap\Company();
         $c->name = 'A Company from testInsert()';
         $c->remark = 'A remark for A Company from testInsert()';
-        \troba\EQM\EQM::insert($c);
+        EQM::insert($c);
         $this->assertEquals(CNT_COMPANY + 2, $c->id);
 
         $p = new Bootstrap\Project();
@@ -128,43 +131,43 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $p->companyId = $c->id;
         $p->name = 'A project with the id ' . $p->id;
         $p->value = 1234.56;
-        \troba\EQM\EQM::insert($p);
-        $this->assertEquals($p->id, \troba\EQM\EQM::query([
+        EQM::insert($p);
+        $this->assertEquals($p->id, EQM::queryByArray([
             'entity' => new Bootstrap\Project(),
             'query' => 'id = ?',
             'params' => $p->id
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
         $pa = new Bootstrap\ProjectActivity();
         $pa->id = 999;
         $pa->projectId = $p->id;
         $pa->name = 'Activity for ' . $p->id . ' with ' . $pa->id;
-        \troba\EQM\EQM::insert($pa);
-        $this->assertEquals($pa->id, \troba\EQM\EQM::query([
+        EQM::insert($pa);
+        $this->assertEquals($pa->id, EQM::queryByArray([
             'entity' => new Bootstrap\ProjectActivity(),
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
-        \troba\EQM\EQM::activateConnection();
+        EQM::activateConnection();
     }
 
     public function testInsertError()
     {
         $c = new Company();
         try {
-            \troba\EQM\EQM::insert($c);
+            EQM::insert($c);
             $r = true;
-        } catch (\troba\EQM\EQMException $e) {
+        } catch (EQMException $e) {
             $r = false;
         }
         $this->assertFalse($r);
 
         $c = new Bootstrap\Company();
         try {
-            \troba\EQM\EQM::insert($c);
+            EQM::insert($c);
             $r = true;
-        } catch (\troba\EQM\EQMException $e) {
+        } catch (EQMException $e) {
             $r = false;
         }
         $this->assertFalse($r);
@@ -172,18 +175,18 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $c->name = null;
         $c->remark = 'no no not good';
         try {
-            \troba\EQM\EQM::insert($c);
+            EQM::insert($c);
             $r = true;
-        } catch (\troba\EQM\EQMException $e) {
+        } catch (EQMException $e) {
             $r = false;
         }
         $this->assertFalse($r);
 
         $p = new Project();
         try {
-            \troba\EQM\EQM::insert($p);
+            EQM::insert($p);
             $r = true;
-        } catch (\troba\EQM\EQMException $e) {
+        } catch (EQMException $e) {
             $r = false;
         }
         $this->assertFalse($r);
@@ -192,9 +195,9 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $p->name = 'not good as I said';
         $p->value = 999;
         try {
-            \troba\EQM\EQM::insert($p);
+            EQM::insert($p);
             $r = true;
-        } catch (\troba\EQM\EQMException $e) {
+        } catch (EQMException $e) {
             $r = false;
         }
         $this->assertFalse($r);
@@ -203,9 +206,9 @@ class EQMInsertTest extends PHPUnit_Framework_TestCase
         $p->name = 'not good as I said';
         $p->value = 9999;
         try {
-            \troba\EQM\EQM::insert($p);
+            EQM::insert($p);
             $r = true;
-        } catch (\troba\EQM\EQMException $e) {
+        } catch (EQMException $e) {
             $r = false;
         }
         $this->assertFalse($r);

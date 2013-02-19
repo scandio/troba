@@ -1,5 +1,7 @@
 <?php
 
+use troba\EQM\EQM;
+
 class Company
 {
 }
@@ -21,185 +23,185 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
 {
     public function testSimpleByString()
     {
-        $this->assertEquals(CNT_COMPANY, count(\troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, count(EQM::queryByArray([
             'entity' => 'Company'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->all()));
+        ])->all()));
 
-        $this->assertEquals(CNT_COMPANY, count(\troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, count(EQM::queryByArray([
             'entity' => 'Company'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)));
+        ])));
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'AnotherCompany'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, EQM::queryByArray([
             'entity' => 'Project'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
             'entity' => 'ProjectActivity'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
     }
 
     public function testSimpleByStringAndNamespace()
     {
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'Bootstrap\Company'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'Bootstrap\AnotherCompany'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, EQM::queryByArray([
             'entity' => 'Bootstrap\Project'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
             'entity' => 'Bootstrap\ProjectActivity'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
     }
 
     public function testSimpleByObject()
     {
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new Company()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new AnotherCompany()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, EQM::queryByArray([
             'entity' => new Project()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
             'entity' => new ProjectActivity()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
     }
 
     public function testSimpleByObjectAndNamespace()
     {
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new Bootstrap\Company()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new Bootstrap\AnotherCompany()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT, EQM::queryByArray([
             'entity' => new Bootstrap\Project()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
             'entity' => new Bootstrap\ProjectActivity()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
     }
 
     public function testSimpleWithClassicConvention()
     {
-        \troba\EQM\EQM::activateConnection('second_db');
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        EQM::activateConnection('second_db');
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'Company'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'Bootstrap\Company'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
             'entity' => new ProjectActivity()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
             'entity' => new Bootstrap\ProjectActivity()
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
-        \troba\EQM\EQM::activateConnection();
+        ])->count());
+        EQM::activateConnection();
     }
 
     public function testQueryWithSimpleParams()
     {
-        $this->assertEquals(4, \troba\EQM\EQM::query([
+        $this->assertEquals(4, EQM::queryByArray([
             'entity' => 'Company',
             'query' => 'name = ?',
             'params' => '4 A Company Name'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new Company(),
             'query' => 'Company.remark like ?',
             'params' => 'A remark for%'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new AnotherCompany(),
             'query' => 'AnotherCompany.remark like ?',
             'params' => 'A remark for%'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
     }
 
     public function testQueryWithNamedParams()
     {
-        $this->assertEquals(4, \troba\EQM\EQM::query([
+        $this->assertEquals(4, EQM::queryByArray([
             'entity' => 'Company',
             'query' => 'name = :name',
             'params' => ['name' => '4 A Company Name']
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new Company(),
             'query' => 'Company.remark like :remark',
             'params' => ['remark' => 'A remark for%']
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new AnotherCompany(),
             'query' => 'AnotherCompany.remark like :remark',
             'params' => ['remark' => 'A remark for%']
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
     }
 
     public function testQueryWithParamsClassic()
     {
-        \troba\EQM\EQM::activateConnection('second_db');
-        $this->assertEquals(4, \troba\EQM\EQM::query([
+        EQM::activateConnection('second_db');
+        $this->assertEquals(4, EQM::queryByArray([
             'entity' => 'Company',
             'query' => 'name = :name',
             'params' => ['name' => '4 A Company Name']
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new Company(),
             'query' => 'Company.remark like :remark',
             'params' => ['remark' => 'A remark for%']
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
+        ])->count());
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new \Bootstrap\Company(),
             'query' => 'Company.remark like ?',
             'params' => 'A remark for%'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->count());
-        \troba\EQM\EQM::activateConnection();
+        ])->count());
+        EQM::activateConnection();
     }
 
     public function testQueryWithOrder()
     {
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new \Bootstrap\Project(),
             'order' => 'companyId DESC'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->companyId);
+        ])->one()->companyId);
 
-        $this->assertEquals(CNT_COMPANY, \troba\EQM\EQM::query([
+        $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => new AnotherCompany(),
             'order' => 'AnotherCompany.id DESC'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->id);
+        ])->one()->id);
 
-        $this->assertEquals(1, \troba\EQM\EQM::query([
+        $this->assertEquals(1, EQM::queryByArray([
             'entity' => new \Bootstrap\Project(),
             'order' => 'companyId'
-        ], \troba\EQM\EQM::QUERY_TYPE_ARRAY)->one()->companyId);
+        ])->one()->companyId);
     }
 }

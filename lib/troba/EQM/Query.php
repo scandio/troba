@@ -221,7 +221,7 @@ class Query
                 ($offset) ? $offset : $this->offset
             );
         }
-        return EQM::query([
+        return EQM::queryByArray([
             'entity' => $this->entity,
             'fields' => $this->fields,
             'from' => $this->from,
@@ -234,7 +234,7 @@ class Query
             'order' => $this->order,
             'limit' => $this->limit,
             'offset' => $this->offset
-        ], EQM::QUERY_TYPE_ARRAY);
+        ]);
     }
 
     /**

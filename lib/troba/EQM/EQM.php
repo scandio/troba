@@ -20,21 +20,6 @@ class EQM extends PDOWrapper
     const RIGHT_JOIN = 'RIGHT JOIN';
 
     /**
-     * Constant for query type used by EQM::query()
-     */
-    const QUERY_TYPE_ARRAY = 'array';
-
-    /**
-     * Constant for query type used by EQM::query()
-     */
-    const QUERY_TYPE_JSON = 'json';
-
-    /**
-     * Constant for query type used by EQM::query()
-     */
-    const QUERY_TYPE_QUERY = 'query';
-
-    /**
      * Constant for convention handler used as key in EQM::initialize()
      */
     const CONVENTION_HANDLER = 'convention_handler';
@@ -275,6 +260,7 @@ class EQM extends PDOWrapper
      * @param string $property
      * @param mixed $value
      * @param $object
+     * @return void
      */
     protected static function setObjectProperty($property, $value, $object)
     {
@@ -296,27 +282,28 @@ class EQM extends PDOWrapper
     public static function queryByPrimary($objectOrClass, $params)
     {
         $primaryQuery = static::primaryQuery($objectOrClass, $params);
-        return static::query($objectOrClass)->where($primaryQuery->query, $primaryQuery->params)->one(1);
+        return static::queryByArray([
+            'entity' => $objectOrClass,
+            'query' => $primaryQuery->query,
+            'params' => $primaryQuery->params
+        ])->one(1);
     }
 
     /**
-     * The troba (E)ntity (Q)uery (M)anager
-     *
-     * @param array|string|object $queryParams depends on the parameter type
-     * @param string $paramType optional default is EQM::QUERY_TYPE_QUERY
-     * @throws EQMException
-     * @return ResultSet|Query
+     * @param object|string $objectOrClass
+     * @return Query
      */
-    public static function query($queryParams = null, $paramType = self::QUERY_TYPE_QUERY)
+    public static function query($objectOrClass = '\StdClass')
     {
-        if ($paramType == self::QUERY_TYPE_QUERY) {
-            return new Query($queryParams);
-        } elseif ($paramType == self::QUERY_TYPE_JSON) {
-            $queryParams = json_decode($queryParams, true);
-            if (is_null($queryParams)) throw new EQMException('Invalid json code', 9001);
-        } elseif (!is_array($queryParams)) {
-            throw new EQMException('Method requires an array', 9002);
-        }
+        return new Query($objectOrClass);
+    }
+
+    /**
+     * @param array $queryParams
+     * @return ResultSetInterface
+     */
+    public static function queryByArray($queryParams = [])
+    {
         # Converts the params array to local variables but instead of default values
         # it's necessary to check them all and set the defaults
         extract($queryParams);
