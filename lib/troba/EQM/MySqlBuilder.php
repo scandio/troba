@@ -177,6 +177,8 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for removing an index from a table
+     *
      * @param string $table
      * @param array $columns
      * @param string $indexType optional [index|unique|primary]
@@ -189,6 +191,8 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for adding a reference between two tables
+     *
      * @param string $fromTable
      * @param string $toTable
      * @param array $keys
@@ -202,6 +206,8 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement to remove a reference between two tables
+     *
      * @param string $fromTable
      * @param string $toTable
      * @return string
@@ -213,6 +219,8 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement for changing or renaming an existing column in a table
+     *
      * @param string $table
      * @param string $column
      * @param string $newColumn
@@ -226,6 +234,8 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Returns a SQL statement to remove a column in a table
+     *
      * @param string $table
      * @param string $column
      * @return string
@@ -236,6 +246,8 @@ class MySqlBuilder implements SqlBuilderInterface
     }
 
     /**
+     * Converts the standard types to SQL type definitions
+     *
      * @param array|string $definition
      * @return string
      */

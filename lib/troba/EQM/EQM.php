@@ -85,6 +85,10 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * checks the object properties against the table columns and returns an array
+     * that contains only the allowed data. Optional it's possible to eliminate the
+     * primary key and auto increment fields
+     *
      * @param $object
      * @param null|string $eliminate allowed value are primary and auto_increment
      * @return array
@@ -189,6 +193,8 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * delete a number of records by a query. there are no event handlers called in this methos
+     *
      * @param object|string $objectOrClass
      * @param string|null $query optional
      * @param array $params
@@ -238,6 +244,9 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * return the value of an object property. It does not matter whether the
+     * property is public, private or protected
+     *
      * @param string $property
      * @param object|string $objectOrClass
      * @return mixed
@@ -257,6 +266,9 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * Sets the property of an object: It does not matter whether the property
+     * is public, private or protected
+     *
      * @param string $property
      * @param mixed $value
      * @param $object
@@ -275,6 +287,8 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * returns a entity object of the requested class by the primary keys of the table
+     *
      * @param object|string $objectOrClass
      * @param array|mixed $params
      * @return object
@@ -290,6 +304,8 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * Returns a chaining query object that calls queryByArray if result() is called
+     *
      * @param object|string $objectOrClass
      * @return Query
      */

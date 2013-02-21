@@ -8,6 +8,8 @@ namespace troba\EQM;
 class DefaultConventionHandler implements ConventionHandlerInterface
 {
     /**
+     * Returns the table name for the given class and adds the class name as an alias
+     *
      * @param string$className the name of a corresponding class
      * @param string $tableName optional the real table name
      *

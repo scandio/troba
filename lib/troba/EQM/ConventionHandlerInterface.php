@@ -8,6 +8,8 @@ namespace troba\EQM;
 interface ConventionHandlerInterface
 {
     /**
+     * Returns the table name for the given class and adds the class name as an alias
+     *
      * @abstract
      *
      * @param string $className the name of a corresponding class

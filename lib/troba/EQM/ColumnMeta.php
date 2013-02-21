@@ -60,7 +60,7 @@ class ColumnMeta
     }
 
     /**
-     * @return bool
+     * @return bool true if the column is a primary key and otherwise false
      */
     public function isPrimary()
     {
@@ -68,7 +68,7 @@ class ColumnMeta
     }
 
     /**
-     * @return bool
+     * @return bool true if the column has a auto increment flaf and otherwise false
      */
     public function isAutoIncrement()
     {

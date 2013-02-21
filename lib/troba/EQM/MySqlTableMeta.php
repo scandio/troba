@@ -36,6 +36,8 @@ class MySqlTableMeta implements TableMetaInterface
     }
 
     /**
+     * Returns all column meta definitions in an array
+     *
      * @return ColumnMeta[]
      */
     public function getColumns()

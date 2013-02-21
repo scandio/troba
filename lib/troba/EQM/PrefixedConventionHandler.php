@@ -25,6 +25,9 @@ class PrefixedConventionHandler implements ConventionHandlerInterface
     }
 
     /**
+     * Returns the table name for the given class concatenated with the prefix
+     * and adds the class name as an alias
+     *
      * @param string $className the class name
      * @param string $tableName optional the table name
      * @return string MUST return a tuple of table name blank class name
