@@ -62,7 +62,7 @@ class EQM extends PDOWrapper
      * @param array $config allowed keys [dns, username, password,
      *                      run_mode, result_Set_class (class name)
      *                      convention_handler (object), sql_builder (object)]
-     * @param string $connectionName optional for multiple connections
+     * @param string $connectionName optional for multiple connections 'default' is the standard
      */
     public static function initialize($config = [], $connectionName = 'default')
     {
