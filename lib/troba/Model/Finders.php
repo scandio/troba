@@ -54,7 +54,7 @@ trait Finders
      * @param array $args [ params, order, limit, offset ]
      * @return \troba\EQM\ResultSetInterface
      */
-    public function __callStatic($name, $args)
+    public static function __callStatic($name, $args)
     {
         $parts = explode('findBy', $name);
         if (count($parts) == 2 && empty($parts[0])) {
