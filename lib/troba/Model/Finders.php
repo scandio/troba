@@ -24,7 +24,7 @@ trait Finders
      * @param array|string $order optional the ORDER BY part of a query
      * @param int $limit optional number of records to be returned
      * @param int $offset optional the offset
-     * @return \troba\EQM\ResultSetInterface
+     * @return \troba\EQM\AbstractResultSet
      */
     public static function findAll($order = [], $limit = null, $offset = null)
     {
@@ -40,7 +40,7 @@ trait Finders
      * @param array|string $order optional
      * @param int $limit optional
      * @param int $offset optional
-     * @return \troba\EQM\ResultSetInterface
+     * @return \troba\EQM\AbstractResultSet
      */
     public static function findBy($property, $value, $order = [], $limit = null, $offset = null)
     {
@@ -52,7 +52,7 @@ trait Finders
      *
      * @param string $name
      * @param array $args [ params, order, limit, offset ]
-     * @return \troba\EQM\ResultSetInterface
+     * @return \troba\EQM\AbstractResultSet
      */
     public static function __callStatic($name, $args)
     {

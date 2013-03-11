@@ -10,7 +10,7 @@ class EQMQueryObjectTest extends PHPUnit_Framework_TestCase
         $result = EQM::query('Company')->result();
         $this->assertEquals($count, $result->count());
         $resultArray = $result->all();
-        $this->assertTrue(is_array($resultArray));
+        $this->assertTrue($resultArray instanceof \ArrayAccess);
         $this->assertEquals($count, count($resultArray));
         $this->assertEquals('Company', get_class($resultArray[0]));
     }

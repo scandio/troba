@@ -13,11 +13,6 @@ class PDOWrapper
     const RUN_MODE = 'run_mode';
 
     /**
-     * ResultSet
-     */
-    const RESULT_SET_CLASS = 'result_set_class';
-
-    /**
      * Run mode dev (for development)
      */
     const DEV_MODE = 'dev';
@@ -69,11 +64,6 @@ class PDOWrapper
                 static::$runMode[$connectionName] = $config[self::RUN_MODE];
             } else {
                 static::$runMode[$connectionName] = self::PROD_MODE;
-            }
-            if (array_key_exists(EQM::RESULT_SET_CLASS, $config)) {
-                static::$resultSetClass[$connectionName] = $config[self::RESULT_SET_CLASS];
-            } else {
-                static::$resultSetClass[$connectionName] = '\\troba\\EQM\\ResultSet';
             }
         } catch (\PDOException $e) {
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
@@ -164,7 +154,7 @@ class PDOWrapper
      * @param array $params optional if the statement needs parameters
      *
      * @throws EQMException
-     * @return ResultSetInterface set of objects - the result class is defined in $objectOrClass
+     * @return AbstractResultSet set of objects - the result class is defined in $objectOrClass
      */
     public static function nativeQuery($objectOrClass, $sql = null, $params = [])
     {
@@ -174,7 +164,7 @@ class PDOWrapper
         try {
             $stmt = static::$db[static::$activeConnection]->prepare($sql);
             $stmt->execute($params);
-            return new static::$resultSetClass[static::$activeConnection]($stmt, $objectOrClass);
+            return new ResultSet($stmt, $objectOrClass);
         } catch (\PDOException $e) {
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
         }

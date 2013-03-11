@@ -2,7 +2,7 @@
 
 namespace troba\EQM;
 
-class ResultSet implements ResultSetInterface
+class ResultSet extends AbstractResultSet
 {
     /**
      * @var \PDOStatement
@@ -23,11 +23,6 @@ class ResultSet implements ResultSetInterface
      * @var int
      */
     protected $count = null;
-
-    /**
-     * @var string
-     */
-    protected $classname = '\StdClass';
 
     /**
      * @param \PDOStatement $pdoStatement
@@ -61,7 +56,7 @@ class ResultSet implements ResultSetInterface
     }
 
     /**
-     *
+     * @return void
      */
     public function next()
     {
@@ -72,7 +67,7 @@ class ResultSet implements ResultSetInterface
     /**
      * @return object
      */
-    public function current()
+    protected function getCurrent()
     {
         return $this->current;
     }
@@ -94,12 +89,12 @@ class ResultSet implements ResultSetInterface
     }
 
     /**
-     * @return array
+     * @return AbstractResultSet
      */
     public function all()
     {
         $this->cursor = $this->count;
-        return $this->pdoStatement->fetchAll();
+        return new ResultSetArray($this->pdoStatement->fetchAll(), $this->classname);
     }
 
     /**

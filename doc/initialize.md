@@ -23,7 +23,6 @@ $config = [
     'username' => '<the username if necessary>'
     'password' => 'the password if necessary>',
     EQM::RUN_MODE => [EQM::DEV_MODE | EQM::PROD_MODE]
-    EQM::RESULT_SET_CLASS => '<a class that implements ResultSetInterface>'
     EQM::CONVENTION_HANDLER => <object that implements ConventionHandlerInterface>
     EQM::SQL_BUILDER => <object that implements SqlBuilderInterface>
 ];
@@ -36,7 +35,6 @@ $config = [
     'username' => '<the username if necessary>'
     'password' => 'the password if necessary>',
     EQM::RUN_MODE => EQM::PROD_MODE,
-    EQM::RESULT_SET_CLASS => 'troba\\EQM\\ResultSet'
     EQM::CONVENTION_HANDLER => new troba\EQM\DefaultConventionHandler(),
     EQM::SQL_BUILDER => new troba\EQM\MySqlBuilder()
 ];

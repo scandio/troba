@@ -211,7 +211,7 @@ class Query
     /**
      * @param int|null $limit optional the number of records to be returned
      * @param int|null $offset optional the starting point
-     * @return ResultSetInterface
+     * @return AbstractResultSet
      */
     public function result($limit = null, $offset = null)
     {

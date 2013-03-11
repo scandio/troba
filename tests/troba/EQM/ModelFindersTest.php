@@ -67,7 +67,7 @@ class ModelFindersTest extends \PHPUnit_Framework_TestCase
     public function testQuery()
     {
         $result = Company::query()->result();
-        $this->assertInstanceOf('troba\\EQM\\ResultSetInterface', $result);
+        $this->assertInstanceOf('troba\\EQM\\AbstractResultSet', $result);
 
         $result = Company::query()
             ->innerJoin(new Project(), 'Company.id = Project.companyId')
