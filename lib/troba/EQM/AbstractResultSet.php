@@ -37,7 +37,7 @@ abstract class AbstractResultSet implements \Iterator, \Countable
             $primary = EQM::tableMeta($this->classname)->getPrimary();
             $key = array_pop($primary);
             foreach ($this->relations as $property => $relation) {
-                $current->{$property} = $relation[$current->{$key}];
+                ObjectProperty::set($property, $relation[$current->{$key}], $current);
             }
 
         }

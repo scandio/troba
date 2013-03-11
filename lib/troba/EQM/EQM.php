@@ -105,7 +105,7 @@ class EQM extends PDOWrapper
                 } else {
                     # TODO ask better
                     # the two if areas above are empty
-                    $data[$column->name] = static::getObjectProperty($column->name, $object);
+                    $data[$column->name] = ObjectProperty::get($column->name, $object);
                 }
             }
         }
@@ -128,7 +128,7 @@ class EQM extends PDOWrapper
         $result = static::nativeExecute($sql, $dataParams, $tableMeta->hasAutoIncrement());
         if ($result) {
             if ($tableMeta->hasAutoIncrement()) {
-                static::setObjectProperty($tableMeta->getAutoIncrement(), $result, $object);
+                ObjectProperty::set($tableMeta->getAutoIncrement(), $result, $object);
             }
             static::handleEvent('postInsert', $object);
             $result = $object;
@@ -210,10 +210,11 @@ class EQM extends PDOWrapper
      * the parameters of the object will be used
      *
      * @param object|string $objectOrClass
+     * @param $objectOrClass
      * @param string|null $params optional
      * @param string $prefix
      * @throws EQMException
-     * @return object the result contains a query and a params parameter
+     * @return object|string the result contains a query and a params parameter
      */
     protected static function primaryQuery($objectOrClass, $params = null, $prefix = '')
     {
@@ -229,7 +230,7 @@ class EQM extends PDOWrapper
         foreach (static::tableMeta($objectOrClass)->getPrimary() AS $primary) {
             $query .= ((!empty($query)) ? ' AND ' : ' ') . $primary . ' = :' . $prefix . $primary;
             if (is_null($params)) {
-                $queryParams[$prefix . $primary] = static::getObjectProperty($primary, $objectOrClass);
+                $queryParams[$prefix . $primary] = ObjectProperty::get($primary, $objectOrClass);
                 if ($queryParams[$prefix . $primary] == null) {
                     throw new EQMException('null is not a valid parameter for a primary query', 9003);
                 }
@@ -240,49 +241,6 @@ class EQM extends PDOWrapper
             }
         }
         return (object)['query' => $query, 'params' => $queryParams];
-    }
-
-    /**
-     * return the value of an object property. It does not matter whether the
-     * property is public, private or protected
-     *
-     * @param string $property
-     * @param object|string $objectOrClass
-     * @return mixed
-     */
-    protected static function getObjectProperty($property, $objectOrClass)
-    {
-        $result = null;
-        if (is_string($objectOrClass) && class_exists($objectOrClass))
-            $objectOrClass = new $objectOrClass();
-        $reflection = new \ReflectionObject($objectOrClass);
-        if ($reflection->hasProperty($property)) {
-            $property = $reflection->getProperty($property);
-            $property->setAccessible(true);
-            return $property->getValue($objectOrClass);
-        }
-        return $result;
-    }
-
-    /**
-     * Sets the property of an object: It does not matter whether the property
-     * is public, private or protected
-     *
-     * @param string $property
-     * @param mixed $value
-     * @param $object
-     * @return void
-     */
-    protected static function setObjectProperty($property, $value, $object)
-    {
-        $reflection = new \ReflectionObject($object);
-        if ($reflection->hasProperty($property)) {
-            $property = $reflection->getProperty($property);
-            $property->setAccessible(true);
-            $property->setValue($object, $value);
-        } else {
-            $object->{$property} = $value;
-        }
     }
 
     /**
@@ -394,7 +352,7 @@ class EQM extends PDOWrapper
         $className = end($tmp);
         $table = null;
         if (class_exists($class) && property_exists($objectOrClass, '__table'))
-            $table = static::getObjectProperty('__table', $objectOrClass);
+            $table = ObjectProperty::get('__table', $objectOrClass);
         $result = static::$conventionHandler[static::$activeConnection]->tableName($className, $table);
         if ($alias) {
             $tableParts = explode(' ', $result);
