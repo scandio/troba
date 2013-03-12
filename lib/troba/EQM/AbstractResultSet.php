@@ -10,6 +10,16 @@ abstract class AbstractResultSet implements \Iterator, \Countable
     protected $relations = [];
 
     /**
+     * @var array
+     */
+    protected $keys = [];
+
+    /**
+     * @var string
+     */
+    protected $cardinality = 'many';
+
+    /**
      * @var string
      */
     protected $classname = '\StdClass';
@@ -19,11 +29,12 @@ abstract class AbstractResultSet implements \Iterator, \Countable
      * @param AbstractResultSet $resultSet
      * @param array|string $keys
      */
-    public function relate($property, $resultSet, $keys)
+    public function relate($property, $resultSet, $keys, $cardinality = 'many')
     {
-        $keys = is_string($keys) ? [$keys] : $keys;
+        $this->keys = $keys;
+        $this->cardinality = $cardinality;
         foreach ($resultSet as $object) {
-            $this->relations[$property][$object->{$keys[0]}][] = $object;
+            $this->relations[$property][ObjectProperty::get($keys[1], $object)][] = $object;
         }
     }
 
@@ -34,10 +45,9 @@ abstract class AbstractResultSet implements \Iterator, \Countable
     {
         $current = $this->getCurrent();
         if (count($this->relations) > 0) {
-            $primary = EQM::tableMeta($this->classname)->getPrimary();
-            $key = array_pop($primary);
             foreach ($this->relations as $property => $relation) {
-                ObjectProperty::set($property, $relation[$current->{$key}], $current);
+                $resultSet = new ResultSetArray($relation[$current->{$this->keys[0]}], $this->classname);
+                ObjectProperty::set($property, ($this->cardinality == 'one') ? $resultSet[0] : $resultSet, $current);
             }
 
         }
@@ -74,6 +84,7 @@ abstract class AbstractResultSet implements \Iterator, \Countable
      * @return mixed
      */
     public abstract function key();
+
     /**
      * @return int the size of the the result set
      */
