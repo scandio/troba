@@ -28,6 +28,7 @@ abstract class AbstractResultSet implements \Iterator, \Countable
      * @param string $property
      * @param AbstractResultSet $resultSet
      * @param array|string $keys
+     * @param string $cardinality optional [many|one]
      */
     public function relate($property, $resultSet, $keys, $cardinality = 'many')
     {
