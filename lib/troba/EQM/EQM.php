@@ -84,6 +84,17 @@ class EQM extends PDOWrapper
     }
 
     /**
+     * checks if a connection is already initialized
+     *
+     * @param string $connectionName
+     * @return bool
+     */
+    public static function isInitialized($connectionName = 'default')
+    {
+        return !empty(static::$sqlBuilder[$connectionName]) && static::$sqlBuilder[$connectionName] instanceof SqlBuilderInterface;
+    }
+
+    /**
      * checks the object properties against the table columns and returns an array
      * that contains only the allowed data. Optional it's possible to eliminate the
      * primary key and auto increment fields
