@@ -91,7 +91,7 @@ class EQM extends PDOWrapper
      */
     public static function isInitialized($connectionName = 'default')
     {
-        return !empty(static::$sqlBuilder[$connectionName]) && static::$sqlBuilder[$connectionName] instanceof SqlBuilderInterface;
+        return !empty(static::$db[$connectionName]) && static::$db[$connectionName] instanceof \PDO;
     }
 
     /**
