@@ -147,7 +147,7 @@ class Query
      */
     public function andWhere($query, $params = [])
     {
-        $this->query .= ' AND ' . $query;
+        $this->query .= ' AND ( ' . $query . ' )';
         $this->queryParams = array_merge($this->queryParams, $params);
         return $this;
     }
@@ -159,7 +159,7 @@ class Query
      */
     public function orWhere($query, $params = [])
     {
-        $this->query .= ' OR ' . $query;
+        $this->query .= ' OR ( ' . $query .' )';
         $this->queryParams = array_merge($this->queryParams, $params);
         return $this;
     }
