@@ -135,7 +135,7 @@ class Query
      */
     public function where($query, $params = [])
     {
-        $this->query = $query;
+        $this->query = '( ' . $query . ' )';
         $this->queryParams = $params;
         return $this;
     }
@@ -159,7 +159,7 @@ class Query
      */
     public function orWhere($query, $params = [])
     {
-        $this->query .= ' OR ( ' . $query .' )';
+        $this->query .= ' OR ( ' . $query . ' )';
         $this->queryParams = array_merge($this->queryParams, $params);
         return $this;
     }
