@@ -33,7 +33,7 @@ class ResultSet extends AbstractResultSet
         $this->pdoStatement = $pdoStatement;
         $this->count = $this->pdoStatement->rowCount();
         $this->classname = $classname;
-        $this->pdoStatement->setFetchMode(\PDO::FETCH_CLASS, $this->classname);
+        $this->pdoStatement->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, $this->classname);
     }
 
     /**

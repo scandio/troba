@@ -296,13 +296,13 @@ class MySqlBuilder implements SqlBuilderInterface
     {
         $stmt = $pdo->prepare("SELECT database()");
         $stmt->execute();
-        $dbName = $stmt->fetch(\PDO::FETCH_ASSOC)['database()'];
+        $dbName = $stmt->fetch(\PDO::FETCH_ASSOC|\PDO::FETCH_PROPS_LATE)['database()'];
         $sql = "SELECT table_name, column_name, column_default, is_nullable, data_type, column_type, column_key, extra
                 FROM information_schema.columns
                 WHERE table_schema = '{$dbName}' AND table_name = '{$this->tableNameDef($table)->table}'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-        $columns = $stmt->fetchAll(\PDO::FETCH_CLASS, 'StdClass');
+        $columns = $stmt->fetchAll(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, 'StdClass');
         return new MySqlTableMeta($columns);
     }
 

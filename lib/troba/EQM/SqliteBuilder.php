@@ -16,7 +16,7 @@ class SqliteBuilder extends MySqlBuilder
     {
         $stmt = $pdo->prepare("PRAGMA table_info('{$this->tableNameDef($table)->table}');");
         $stmt->execute();
-        $columns = $stmt->fetchAll(\PDO::FETCH_CLASS, 'StdClass');
+        $columns = $stmt->fetchAll(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, 'StdClass');
         return new SqliteTableMeta($columns);
     }
 }
