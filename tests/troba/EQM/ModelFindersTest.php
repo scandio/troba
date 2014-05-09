@@ -1,6 +1,6 @@
 <?php
 
-namespace ModelTest;
+namespace ModelFindersTest;
 
 use troba\Model\Finders;
 use troba\EQM\EQM;

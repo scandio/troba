@@ -10,6 +10,7 @@
             <file>./troba/EQM/EQMTransactionTest.php</file>
             <file>./troba/EQM/EQMQueryObjectTest.php</file>
             <file>./troba/EQM/ModelFindersTest.php</file>
+            <file>./troba/EQM/ModelPersistersTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
