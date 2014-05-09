@@ -14,7 +14,7 @@ use \troba\EQM\EQM;
 use troba\EQM\ClassicConventionHandler;
 
 
-$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::WARNING)]);
+$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
 
 # Connect to two databases
 # default
