@@ -6,16 +6,24 @@ require_once '../lib/troba/Util/ClassLoader.php';
 $loader = new \troba\Util\ClassLoader('troba', '../lib');
 $loader->register();
 
+require_once '../vendor/autoload.php';
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
 use \troba\EQM\EQM;
 use troba\EQM\ClassicConventionHandler;
 
-# Connect to two data bases
+
+$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::WARNING)]);
+
+# Connect to two databases
 # default
 EQM::initialize([
     'dsn' => 'mysql:host=localhost;dbname=orm_test',
     'username' => 'root',
     'password' => 'root',
-    EQM::RUN_MODE => EQM::DEV_MODE
+    EQM::RUN_MODE => EQM::DEV_MODE,
+    EQM::LOGGER => $logger
 ]);
 # second_db
 EQM::initialize([
@@ -23,7 +31,8 @@ EQM::initialize([
     'username' => 'root',
     'password' => 'root',
     EQM::CONVENTION_HANDLER => new ClassicConventionHandler(),
-    EQM::RUN_MODE => EQM::DEV_MODE
+    EQM::RUN_MODE => EQM::DEV_MODE,
+    EQM::LOGGER => $logger
 ], 'second_db');
 # Delete all tables from 'default' connection
 try {

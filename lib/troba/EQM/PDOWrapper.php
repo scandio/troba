@@ -2,6 +2,8 @@
 
 namespace troba\EQM;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * Manage all PDO requests and settings
  */
@@ -23,6 +25,11 @@ class PDOWrapper
     const PROD_MODE = 'prod';
 
     /**
+     * Psr-3 logger object
+     */
+    const LOGGER = 'logger';
+
+    /**
      * @var \PDO[] list of PDO connections
      */
     protected static $db = [];
@@ -41,6 +48,11 @@ class PDOWrapper
      * @var string[] array of class names for specific result sets
      */
     protected static $resultSetClass = [];
+
+    /**
+     * @var null|LoggerInterface Psr-3 logger object
+     */
+    protected static $logger = null;
 
     /**
      * @static
@@ -64,6 +76,9 @@ class PDOWrapper
                 static::$runMode[$connectionName] = $config[self::RUN_MODE];
             } else {
                 static::$runMode[$connectionName] = self::PROD_MODE;
+            }
+            if (array_key_exists(self::LOGGER, $config)) {
+                static::$logger = $config[self::LOGGER];
             }
         } catch (\PDOException $e) {
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
@@ -132,13 +147,13 @@ class PDOWrapper
     public static function nativeExecute($sql, $params = [], $lastInsertedId = false)
     {
         if (!is_array($params)) $params = [$params];
-        static::log($sql, $params);
+        static::$logger->info($sql, $params);
         try {
             $stmt = static::$db[static::$activeConnection]->prepare($sql);
             $stmt->execute($params);
             return (($lastInsertedId) ? static::$db[static::$activeConnection]->lastInsertId() : $stmt->rowCount());
         } catch (\PDOException $e) {
-            static::log($e->getMessage(), $e);
+            static::$logger->error($e->getMessage());
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -160,37 +175,13 @@ class PDOWrapper
     {
         $objectOrClass = (is_object($objectOrClass)) ? get_class($objectOrClass) : $objectOrClass;
         if (!is_array($params)) $params = [$params];
-        static::log($sql, $params);
+        static::$logger->info($sql, $params);
         try {
             $stmt = static::$db[static::$activeConnection]->prepare($sql);
             $stmt->execute($params);
             return new ResultSet($stmt, $objectOrClass);
         } catch (\PDOException $e) {
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
-    /**
-     * Logs all sql statements to the standard error log if the DEV_MODE ist set
-     * @static
-     *
-     * @param string $sql the statement that should be logged
-     * @param mixed $params optional the corresponding parameters
-     */
-    public static function log($sql, $params = null)
-    {
-        if (static::$runMode[static::$activeConnection] == EQM::DEV_MODE) {
-            $paramString = '';
-            if (!is_null($params)) {
-                ob_start();
-                var_dump($params);
-                $paramString = ob_get_contents();
-                ob_end_clean();
-            }
-            error_log(PHP_EOL . 'EQM: ' . $sql . PHP_EOL .
-                    'with: ' . $paramString . PHP_EOL .
-                    'using: ' . static::$activeConnection . PHP_EOL
-            );
         }
     }
 }
