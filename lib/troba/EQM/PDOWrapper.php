@@ -3,6 +3,7 @@
 namespace troba\EQM;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Manage all PDO requests and settings
@@ -77,8 +78,10 @@ class PDOWrapper
             } else {
                 static::$runMode[$connectionName] = self::PROD_MODE;
             }
-            if (array_key_exists(self::LOGGER, $config)) {
+            if (array_key_exists(self::LOGGER, $config) && $config[self::LOGGER] instanceof LoggerInterface) {
                 static::$logger = $config[self::LOGGER];
+            } else {
+                static::$logger = new NullLogger();
             }
         } catch (\PDOException $e) {
             throw new EQMException($e->getMessage(), $e->getCode(), $e);

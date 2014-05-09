@@ -57,7 +57,7 @@ require_once '../vendor/autoload.php';
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
-// you need to use a Psr-3 Logger
+// you may use a Psr-3 Logger, this is optional
 $logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
 
 use troba\EQM\EQM;
