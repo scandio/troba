@@ -53,6 +53,13 @@ require_once '../troba/lib/troba/Util/ClassLoader.php';
 $loader = new \troba\Util\ClassLoader('troba', '../troba/lib');
 $loader->register();
 
+require_once '../vendor/autoload.php';
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// you need to use a Psr-3 Logger
+$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
+
 use troba\EQM\EQM;
 
 // init the default connection
@@ -61,6 +68,7 @@ EQM::initialize([
     'username' => 'root',
     'password' => 'root',
     EQM::RUN_MODE => EQM::DEV_MODE,
+    EQM::LOGGER => $logger
 ]);
 
 // init the second connection
@@ -69,7 +77,8 @@ EQM::initialize([
     'username' => 'root',
     'password' => 'root',
     EQM::RUN_MODE => EQM::DEV_MODE,
-    EQM::CONVENTION_HANDLER => new \troba\EQM\ClassicConventionHandler();
+    EQM::CONVENTION_HANDLER => new \troba\EQM\ClassicConventionHandler(),
+    EQM::LOGGER => $logger
 ], 'second');
 
 // read all records from table Company in database orm_test

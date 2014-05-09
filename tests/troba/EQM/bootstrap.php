@@ -9,10 +9,8 @@ $loader->register();
 require_once '../vendor/autoload.php';
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
 use \troba\EQM\EQM;
 use troba\EQM\ClassicConventionHandler;
-
 
 $logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
 
