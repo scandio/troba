@@ -1,85 +1,84 @@
-# Initialize EQM / DDL
+# Initialize EQM
 
 EQM is a static class but it is able to manage multiple connections.
 
 ## Basic connection
 
-You can initialize troba if you call `EQM::initailze()` with an array as configuration
-and an optional second parameter for a second connection name.
+You can initialize troba if you call `EQM::initailze()` with a simple PDO object and an optional array as configuration
+and an optional second parameter for a further connection name.
 
 ```php
-EQM::initialize([
-    'dsn' => '<pdo dsn>',
-    'username' => '<username>',
-    'password' => '<password>'
-]);
+EQM::initialize(new \PDO('mysql:host=localhost;dbname=orm_test', 'root', 'root'));
 ```
 
 The configuration array has more parameters but there are a lot of defaults. The full array is this:
 
 ```php
 $config = [
-    'dsn' => '<the pdo dsn>',
-    'username' => '<the username if necessary>'
-    'password' => 'the password if necessary>',
-    EQM::RUN_MODE => [EQM::DEV_MODE | EQM::PROD_MODE]
     EQM::CONVENTION_HANDLER => <object that implements ConventionHandlerInterface>
     EQM::SQL_BUILDER => <object that implements SqlBuilderInterface>
+    EQM::LOGGER => <object of a Psr-3 compatible logger>
 ];
 
 ```
 The defaults are
+
 ```php
 $config = [
-    'dsn' => '<the pdo dsn>',
-    'username' => '<the username if necessary>'
-    'password' => 'the password if necessary>',
-    EQM::RUN_MODE => EQM::PROD_MODE,
     EQM::CONVENTION_HANDLER => new troba\EQM\DefaultConventionHandler(),
     EQM::SQL_BUILDER => new troba\EQM\MySqlBuilder()
+    EQM::LOGGER => new Psr\Log\NullLogger()
 ];
+```
 
+## Example full initialization
+
+```php
+<?php
+
+require_once('vendor/autoload.php');
+
+use troba\EQM\EQM;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+EQM::initialize(
+    new \PDO(
+        'mysql:host=localhost;dbname=orm_test2', 'root', 'root',
+        [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]
+    ),
+    [
+        EQM::CONVENTION_HANDLER => new ClassicConventionHandler(),
+        EQM::SQL_BUILDER => new MySqlBuilder(),
+        EQM::LOGGER => new Logger('troba.test', new StreamHandler(__DIR__ . '/troba-test.log', Logger::ERROR))
+    ],
+    'my_connection'
+);
 ```
 
 ## Multiple connections
 
-The first call of `initialize()` sets the `'default'` connection. With `initialize($config, $connectionName)`
+The first call of `initialize()` sets the `'default'` connection. With `initialize($pdo, $config, $connectionName)`
 you can add another connection with adifferent name. If you want to use another conntection than the default
 connection you have to call `activateConnection($connectionName)`. The following example shows a table copy from
 one database to another with a different convention handler that means another table naming.
 
 ```php
-require_once '../troba/lib/troba/Util/ClassLoader.php';
-$loader = new \troba\Util\ClassLoader('troba', '../troba/lib');
-$loader->register();
+<?php
 
-require_once '../vendor/autoload.php';
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
+require_once('vendor/autoload.php');
 
-// you may use a Psr-3 Logger, this is optional
-$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
+class Company
+{
+}
 
 use troba\EQM\EQM;
 
-// init the default connection
-EQM::initialize([
-    'dsn' => 'mysql:host=localhost;dbname=orm_test',
-    'username' => 'root',
-    'password' => 'root',
-    EQM::RUN_MODE => EQM::DEV_MODE,
-    EQM::LOGGER => $logger
-]);
+// init first connection
+EQM::initialize(new \PDO('mysql:host=localhost;dbname=orm_test', 'root', 'root'));
 
-// init the second connection
-EQM::initialize([
-    'dsn' => 'mysql:host=localhost;dbname=orm_test2',
-    'username' => 'root',
-    'password' => 'root',
-    EQM::RUN_MODE => EQM::DEV_MODE,
-    EQM::CONVENTION_HANDLER => new \troba\EQM\ClassicConventionHandler(),
-    EQM::LOGGER => $logger
-], 'second');
+// init second connection
+EQM::initialize(new \PDO('mysql:host=localhost;dbname=orm_test2', 'root', 'root'), [], 'second_db');
 
 // read all records from table Company in database orm_test
 $companies = EQM::query(new Company())->result();
@@ -96,4 +95,3 @@ foreach($companies as $company) {
 // reactivate default connection
 EQM::activateConnection();
 ```
-
