@@ -11,6 +11,7 @@
             <file>./troba/EQM/EQMQueryObjectTest.php</file>
             <file>./troba/EQM/ModelFindersTest.php</file>
             <file>./troba/EQM/ModelPersistersTest.php</file>
+            <file>./troba/EQM/ModelGettersSettersTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -33,4 +33,33 @@ class ModelPersistersTest extends \PHPUnit_Framework_TestCase
         $c->insert();
         $this->assertNotNull($c->id);
     }
+
+    public function testUpdate()
+    {
+        $c = Company::findBy('name', 'Model Persister Company')->one();
+        $c->name = 'Model Persister Company updated';
+        $c->update();
+        $c2 = Company::find($c->id);
+        $this->assertEquals($c2->name, 'Model Persister Company updated');
+    }
+
+    public function testSave()
+    {
+        $c = new Company();
+        $c->name = 'Model Persister Company 2';
+        $c->save();
+        $this->assertNotNull($c->id);
+        $c->name = 'Model Persister Company 2 updated';
+        $c->save();
+        $c2 = Company::find($c->id);
+        $this->assertEquals($c2->name, 'Model Persister Company 2 updated');
+    }
+
+    public function testDelete()
+    {
+        $c = Company::findBy('name', 'Model Persister Company 2 updated')->one();
+        $c->delete();
+        $cList = Company::findBy('name', 'Model Persister Company 2 updated');
+        $this->assertEquals($cList->count(), 0);
+    }
 }
