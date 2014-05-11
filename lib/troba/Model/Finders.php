@@ -1,6 +1,7 @@
 <?php
 
 namespace troba\Model;
+use troba\EQM\EQM;
 
 /**
  * use this trait if you entity class should have finders
@@ -17,7 +18,7 @@ trait Finders
      */
     public static function find($primaries)
     {
-        return \troba\EQM\EQM::queryByPrimary(get_called_class(), $primaries);
+        return EQM::queryByPrimary(get_called_class(), $primaries);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace troba\Model;
 
+use troba\EQM\EQM;
+
 trait Queries
 {
     /**
@@ -9,6 +11,6 @@ trait Queries
      */
     public static function query()
     {
-        return \troba\EQM\EQM::query(get_called_class());
+        return EQM::query(get_called_class());
     }
 }
