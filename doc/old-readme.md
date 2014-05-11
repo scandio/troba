@@ -21,11 +21,6 @@ Here's an example:
 ```php
 <?php
 
-// own class loader
-require_once '../troba/lib/troba/Util/ClassLoader.php';
-$loader = new \troba\Util\ClassLoader('troba', '../troba/lib');
-$loader->register();
-
 // or composer's loader
 require_once 'vendor/autoload.php';
 

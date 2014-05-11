@@ -1,18 +1,15 @@
 <?php
 namespace Bootstrap;
-# Load libs an register class loader
-
-require_once '../lib/troba/Util/ClassLoader.php';
-$loader = new \troba\Util\ClassLoader('troba', '../lib');
-$loader->register();
 
 require_once '../vendor/autoload.php';
+
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use \troba\EQM\EQM;
 use troba\EQM\ClassicConventionHandler;
 use troba\EQM\EQMException;
 
+// create logger object
 $logger = new Logger('troba-test', [
         new StreamHandler(__DIR__ . '/troba-tests.log',
             Logger::ERROR
@@ -20,19 +17,18 @@ $logger = new Logger('troba-test', [
     ]
 );
 
-# Connect to two databases
-# default
+// Connect to two databases
+// default
 EQM::initialize(
     new \PDO(
         'mysql:host=localhost;dbname=orm_test', 'root', 'root',
         [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]
     ),
     [
-        EQM::RUN_MODE => EQM::DEV_MODE,
         EQM::LOGGER => $logger
     ]
 );
-# second_db
+// second_db
 EQM::initialize(
     new \PDO(
         'mysql:host=localhost;dbname=orm_test2', 'root', 'root',
@@ -40,13 +36,12 @@ EQM::initialize(
     ),
     [
         EQM::CONVENTION_HANDLER => new ClassicConventionHandler(),
-        EQM::RUN_MODE => EQM::DEV_MODE,
         EQM::LOGGER => $logger
     ],
     'second_db'
 );
 
-# Delete all tables from 'default' connection
+// Delete all tables from 'default' connection
 try {
     EQM::nativeExecute("DROP TABLE Company");
 } catch (EQMException $e) {
@@ -62,7 +57,8 @@ try {
 } catch (EQMException $e) {
     $logger->error($e->getMessage());
 }
-# Create all tables for 'default' connection
+
+// Create all tables for 'default' connection
 EQM::nativeExecute("
     CREATE TABLE Company (
         id int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -71,6 +67,7 @@ EQM::nativeExecute("
         PRIMARY KEY (id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
+
 EQM::nativeExecute("
     CREATE TABLE Project (
         id varchar(255) NOT NULL,
@@ -78,19 +75,21 @@ EQM::nativeExecute("
         name varchar(255) NOT NULL,
         value decimal(10,2) DEFAULT 0,
         PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
+
 EQM::nativeExecute("
     CREATE TABLE ProjectActivity (
         id int(11) unsigned NOT NULL,
         projectId varchar(255) NOT NULL,
         name varchar(255) NOT NULL,
         PRIMARY KEY (id, projectId)
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
-# Switch to 'second_db' connection
+
+// Switch to 'second_db' connection
 EQM::activateConnection('second_db');
-# Delete all tables from 'second_db_ connection
+// Delete all tables from 'second_db_ connection
 try {
     EQM::nativeExecute("DROP TABLE company");
 } catch (EQMException $e) {
@@ -106,13 +105,15 @@ try {
 } catch (EQMException $e) {
     $logger->error($e->getMessage());
 }
-# Create all tables for 'second_db' connection
+// Create all tables for 'second_db' connection
 EQM::nativeExecute("CREATE TABLE company (
     id int(11) unsigned NOT NULL AUTO_INCREMENT,
         name varchar(512) NOT NULL DEFAULT '',
         remark varchar(512),
         PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+");
+
 EQM::nativeExecute("
     CREATE TABLE project (
         id varchar(255) NOT NULL,
@@ -120,20 +121,22 @@ EQM::nativeExecute("
         name varchar(255) NOT NULL,
         value decimal(10,2) DEFAULT 0,
         PRIMARY KEY (id)
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
+
 EQM::nativeExecute("
     CREATE TABLE project_activity (
         id int(11) unsigned NOT NULL,
         projectId varchar(255) NOT NULL,
         name varchar(255) NOT NULL,
         PRIMARY KEY (id, projectId)
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
-# Switch back to 'default' connection
+
+// Switch back to 'default' connection
 EQM::activateConnection();
 
-# Define classes
+// Define classes
 class Company
 {
 }
@@ -151,10 +154,11 @@ class ProjectActivity
 {
 }
 
-# Generate data
+// Generate test data
 define('CNT_COMPANY', 27);
 define('CNT_PROJECT', 9);
 define('CNT_PROJECT_ACTIVITY', 7);
+
 function generate($max_i, $max_j, $max_k)
 {
     $c = new Company();
@@ -181,9 +185,11 @@ function generate($max_i, $max_j, $max_k)
 }
 
 generate(CNT_COMPANY, CNT_PROJECT, CNT_PROJECT_ACTIVITY);
-# Generate data for 'second_db' connection
+
+// Generate data for 'second_db' connection
 EQM::activateConnection('second_db');
 generate(CNT_COMPANY, CNT_PROJECT, CNT_PROJECT_ACTIVITY);
-# Switch back to 'default' connection
+
+// Switch back to 'default' connection
 EQM::activateConnection();
 

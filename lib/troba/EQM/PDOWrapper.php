@@ -44,7 +44,7 @@ class PDOWrapper
      * @static
      *
      * @param \PDO $pdo a valid PDO connection object
-     * @param array $config PDO configuration [run_mode, result_Set_class (class name)]
+     * @param array $config PDO configuration [result_Set_class (class name)]
      * @param string $connectionName optional connection name
      *
      * @throws EQMException
