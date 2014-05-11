@@ -9,9 +9,9 @@
             <file>./troba/EQM/EQMDeleteTest.php</file>
             <file>./troba/EQM/EQMTransactionTest.php</file>
             <file>./troba/EQM/EQMQueryObjectTest.php</file>
-            <file>./troba/EQM/ModelFindersTest.php</file>
-            <file>./troba/EQM/ModelPersistersTest.php</file>
-            <file>./troba/EQM/ModelGettersSettersTest.php</file>
+            <file>./troba/Model/ModelFindersTest.php</file>
+            <file>./troba/Model/ModelPersistersTest.php</file>
+            <file>./troba/Model/ModelGettersSettersTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>
