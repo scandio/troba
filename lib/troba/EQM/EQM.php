@@ -41,31 +41,22 @@ class EQM extends PDOWrapper
     protected static $conventionHandler = [];
 
     /**
-     * @var SqlBuilderInterface[] a SqlBuilder based on SqlBuilderInterface
-     */
-    protected static $sqlBuilder = [];
-
-    /**
      * To initialize the first connection you need at least the PDO parameters in a assoc array
      * It's possible to use more parameters. Here ist the complete array
      *
      *  $config =   [
-     *                  'dsn' => '<the pdo dsn>',
-     *                  'username' => '<the username if necessary>'
-     *                  'password' => 'the password if necessary>',
-     *                  EQM::RUN_MODE => [EQM::DEV_MODE | EQM::PROD_MODE]
      *                  EQM::CONVENTION_HANDLER => <object that implements ConventionHandlerInterface>
      *                  EQM::SQL_BUILDER => <object that implements SqlBuilderInterface>
      *              ]
      *
-     * @param array $config allowed keys [dns, username, password,
-     *                      run_mode, result_Set_class (class name)
+     * @param \PDO $pdo a valid PDO connection object
+     * @param array $config allowed keys [run_mode, result_Set_class (class name)
      *                      convention_handler (object), sql_builder (object)]
      * @param string $connectionName optional for multiple connections 'default' is the standard
      */
-    public static function initialize($config = [], $connectionName = 'default')
+    public static function initialize($pdo, $config = [], $connectionName = 'default')
     {
-        parent::initialize($config, $connectionName);
+        parent::initialize($pdo, $config, $connectionName);
         static::$metaCache[$connectionName] = [];
         if (array_key_exists(static::CONVENTION_HANDLER, $config)
             && $config[static::CONVENTION_HANDLER] instanceof ConventionHandlerInterface
@@ -82,6 +73,11 @@ class EQM extends PDOWrapper
             static::$sqlBuilder[$connectionName] = new MySqlBuilder;
         }
     }
+
+    /**
+     * @var SqlBuilderInterface[] a SqlBuilder based on SqlBuilderInterface
+     */
+    protected static $sqlBuilder = [];
 
     /**
      * checks if a connection is already initialized

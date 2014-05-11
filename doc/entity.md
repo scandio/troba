@@ -1,4 +1,4 @@
-# Models
+# Entity classes
 
 It is not necessary in troba that you define special model classes. Every object is persistable.
 

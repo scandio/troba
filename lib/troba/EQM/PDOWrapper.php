@@ -11,21 +11,6 @@ use Psr\Log\NullLogger;
 class PDOWrapper
 {
     /**
-     * Run mode management
-     */
-    const RUN_MODE = 'run_mode';
-
-    /**
-     * Run mode dev (for development)
-     */
-    const DEV_MODE = 'dev';
-
-    /**
-     * Run mode prod (for production)
-     */
-    const PROD_MODE = 'prod';
-
-    /**
      * Psr-3 logger object
      */
     const LOGGER = 'logger';
@@ -58,33 +43,20 @@ class PDOWrapper
     /**
      * @static
      *
-     * @param array $config PDO configuration [dsn, user, password, run_mode, result_Set_class (class name)]
+     * @param \PDO $pdo a valid PDO connection object
+     * @param array $config PDO configuration [run_mode, result_Set_class (class name)]
      * @param string $connectionName optional connection name
      *
      * @throws EQMException
      */
-    public static function initialize($config = [], $connectionName = 'default')
+    public static function initialize($pdo, $config = [], $connectionName = 'default')
     {
-        try {
-            static::$db[$connectionName] = new \PDO(
-                $config['dsn'],
-                $config['username'],
-                $config['password'],
-                [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]
-            );
-            static::$db[$connectionName]->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            if (array_key_exists(self::RUN_MODE, $config)) {
-                static::$runMode[$connectionName] = $config[self::RUN_MODE];
-            } else {
-                static::$runMode[$connectionName] = self::PROD_MODE;
-            }
-            if (array_key_exists(self::LOGGER, $config) && $config[self::LOGGER] instanceof LoggerInterface) {
-                static::$logger = $config[self::LOGGER];
-            } else {
-                static::$logger = new NullLogger();
-            }
-        } catch (\PDOException $e) {
-            throw new EQMException($e->getMessage(), $e->getCode(), $e);
+        static::$db[$connectionName] = $pdo;
+        static::$db[$connectionName]->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        if (array_key_exists(self::LOGGER, $config) && $config[self::LOGGER] instanceof LoggerInterface) {
+            static::$logger = $config[self::LOGGER];
+        } else {
+            static::$logger = new NullLogger();
         }
     }
 
@@ -93,7 +65,8 @@ class PDOWrapper
      *
      * @static
      */
-    public static function begin()
+    public
+    static function begin()
     {
         static::$db[static::$activeConnection]->beginTransaction();
     }

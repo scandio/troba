@@ -11,42 +11,56 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use \troba\EQM\EQM;
 use troba\EQM\ClassicConventionHandler;
+use troba\EQM\EQMException;
 
-$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
+$logger = new Logger('troba-test', [
+        new StreamHandler(__DIR__ . '/troba-tests.log',
+            Logger::ERROR
+        )
+    ]
+);
 
 # Connect to two databases
 # default
-EQM::initialize([
-    'dsn' => 'mysql:host=localhost;dbname=orm_test',
-    'username' => 'root',
-    'password' => 'root',
-    EQM::RUN_MODE => EQM::DEV_MODE,
-    EQM::LOGGER => $logger
-]);
+EQM::initialize(
+    new \PDO(
+        'mysql:host=localhost;dbname=orm_test', 'root', 'root',
+        [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]
+    ),
+    [
+        EQM::RUN_MODE => EQM::DEV_MODE,
+        EQM::LOGGER => $logger
+    ]
+);
 # second_db
-EQM::initialize([
-    'dsn' => 'mysql:host=localhost;dbname=orm_test2',
-    'username' => 'root',
-    'password' => 'root',
-    EQM::CONVENTION_HANDLER => new ClassicConventionHandler(),
-    EQM::RUN_MODE => EQM::DEV_MODE,
-    EQM::LOGGER => $logger
-], 'second_db');
+EQM::initialize(
+    new \PDO(
+        'mysql:host=localhost;dbname=orm_test2', 'root', 'root',
+        [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]
+    ),
+    [
+        EQM::CONVENTION_HANDLER => new ClassicConventionHandler(),
+        EQM::RUN_MODE => EQM::DEV_MODE,
+        EQM::LOGGER => $logger
+    ],
+    'second_db'
+);
+
 # Delete all tables from 'default' connection
 try {
     EQM::nativeExecute("DROP TABLE Company");
 } catch (EQMException $e) {
-    var_dump($e->getMessage());
+    $logger->error($e->getMessage());
 }
 try {
     EQM::nativeExecute("DROP TABLE Project");
 } catch (EQMException $e) {
-    var_dump($e->getMessage());
+    $logger->error($e->getMessage());
 }
 try {
     EQM::nativeExecute("DROP TABLE ProjectActivity");
 } catch (EQMException $e) {
-    var_dump($e->getMessage());
+    $logger->error($e->getMessage());
 }
 # Create all tables for 'default' connection
 EQM::nativeExecute("
@@ -80,17 +94,17 @@ EQM::activateConnection('second_db');
 try {
     EQM::nativeExecute("DROP TABLE company");
 } catch (EQMException $e) {
-    var_dump($e->getMessage());
+    $logger->error($e->getMessage());
 }
 try {
     EQM::nativeExecute("DROP TABLE project");
 } catch (EQMException $e) {
-    var_dump($e->getMessage());
+    $logger->error($e->getMessage());
 }
 try {
     EQM::nativeExecute("DROP TABLE project_activity");
 } catch (EQMException $e) {
-    var_dump($e->getMessage());
+    $logger->error($e->getMessage());
 }
 # Create all tables for 'second_db' connection
 EQM::nativeExecute("CREATE TABLE company (
@@ -118,6 +132,7 @@ EQM::nativeExecute("
 ");
 # Switch back to 'default' connection
 EQM::activateConnection();
+
 # Define classes
 class Company
 {
@@ -164,6 +179,7 @@ function generate($max_i, $max_j, $max_k)
         }
     }
 }
+
 generate(CNT_COMPANY, CNT_PROJECT, CNT_PROJECT_ACTIVITY);
 # Generate data for 'second_db' connection
 EQM::activateConnection('second_db');
