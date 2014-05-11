@@ -30,7 +30,7 @@ $result = Company::query() // inner join query
     ->innerJoin(new Project(), 'Company.id = Project.companyId')
     ->where('Project.name LIKE :name', ['name' => '%PRO%'])
     ->result();
-``
+```
 
 ## Using Finders
 
