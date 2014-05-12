@@ -4,7 +4,6 @@ namespace ModelPersistersTest;
 
 use troba\EQM\EQMException;
 use troba\Model\Finders;
-use troba\EQM\EQM;
 use troba\Model\Persisters;
 
 class Company

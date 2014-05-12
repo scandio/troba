@@ -4,7 +4,6 @@ namespace ModelGettersSettersTest;
 
 use troba\EQM\EQMException;
 use troba\Model\Finders;
-use troba\EQM\EQM;
 use troba\Model\Getters;
 use troba\Model\Persisters;
 use troba\Model\Setters;
