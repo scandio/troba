@@ -2,6 +2,7 @@
 
 namespace ModelPersistersTest;
 
+use troba\EQM\EQMException;
 use troba\Model\Finders;
 use troba\EQM\EQM;
 use troba\Model\Persisters;
@@ -61,5 +62,17 @@ class ModelPersistersTest extends \PHPUnit_Framework_TestCase
         $c->delete();
         $cList = Company::findBy('name', 'Model Persister Company 2 updated');
         $this->assertEquals($cList->count(), 0);
+    }
+
+    public function testNoSave()
+    {
+        $p = new Project();
+        $p->id = 'ABC';
+        $p->name = 'abc';
+        try {
+            $p->save();
+        } catch (EQMException $e) {
+            $this->assertEquals($e->getMessage(), 'save() is not possible for entities without auto increment primary key');
+        }
     }
 }

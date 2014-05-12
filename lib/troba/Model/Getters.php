@@ -2,6 +2,8 @@
 
 namespace troba\Model;
 
+use troba\EQM\EQMException;
+
 trait Getters
 {
     /**
@@ -28,7 +30,7 @@ trait Getters
         if (method_exists($this, $method = 'get' . ucfirst($name))) {
             return $this->{$method}($args);
         } else {
-            throw new \Exception('Method or property does not exists');
+            throw new EQMException('Method or property does not exists');
         }
     }
 }

@@ -57,9 +57,10 @@ trait Finders
      */
     public static function __callStatic($name, $args)
     {
+        $result = null;
         $parts = explode('findBy', $name);
         if (count($parts) == 2 && empty($parts[0])) {
-            return static::findBy(
+            $result = static::findBy(
                 lcfirst($parts[1]),
                 $args[0],
                 (isset($args[1])) ? $args[1] : null,
@@ -67,6 +68,6 @@ trait Finders
                 (isset($args[3])) ? $args[2] : null
             );
         }
-        return null;
+        return $result;
     }
 }

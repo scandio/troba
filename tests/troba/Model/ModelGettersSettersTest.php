@@ -2,6 +2,7 @@
 
 namespace ModelGettersSettersTest;
 
+use troba\EQM\EQMException;
 use troba\Model\Finders;
 use troba\EQM\EQM;
 use troba\Model\Getters;
@@ -89,9 +90,18 @@ class ProjectActivity
         return Project::find($this->projectId);
     }
 
-    public function getSenseless($args = []) {
+    public function getSenseless($args = [])
+    {
         return 'senseless_' . $args[0];
     }
+}
+
+class ACompany
+{
+
+    use Setters;
+
+    private $__table = "Company";
 }
 
 class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
@@ -132,5 +142,25 @@ class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($pa->project()->id, $p->id);
         $this->assertEquals($pa->getSenseless(['value']), 'senseless_value');
         $this->assertEquals($pa->senseless('value'), 'senseless_value');
+    }
+
+    public function testNonExisting()
+    {
+        try {
+            $p = new Project();
+            $p->nonExisting();
+        } catch (EQMException $e) {
+            $this->assertEquals($e->getMessage(), 'Method or property does not exists');
+        }
+    }
+
+    public function testPrivateException()
+    {
+        $c = new ACompany();
+        try {
+            $c->name = 'abc';
+        } catch (EQMException $e) {
+            $this->assertEquals($e->getMessage(), 'private or protected properties are not accessible');
+        }
     }
 }

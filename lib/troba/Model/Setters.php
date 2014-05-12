@@ -2,6 +2,8 @@
 
 namespace troba\Model;
 
+use troba\EQM\EQMException;
+
 trait Setters
 {
     /**
@@ -14,7 +16,7 @@ trait Setters
         if (method_exists($this, $method = 'set' . ucfirst($name))) {
             $this->{$method}($value);
         } else {
-            throw new \Exception('private or protected properties are not accessible');
+            throw new EQMException('private or protected properties are not accessible');
         }
     }
 }
