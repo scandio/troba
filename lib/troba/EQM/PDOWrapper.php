@@ -36,9 +36,9 @@ class PDOWrapper
     protected static $resultSetClass = [];
 
     /**
-     * @var null|LoggerInterface Psr-3 logger object
+     * @var LoggerInterface[] Psr-3 logger object
      */
-    protected static $logger = null;
+    protected static $logger = [];
 
     /**
      * @static
@@ -58,9 +58,9 @@ class PDOWrapper
         }
         static::$db[$connectionName]->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         if (array_key_exists(self::LOGGER, $config) && $config[self::LOGGER] instanceof LoggerInterface) {
-            static::$logger = $config[self::LOGGER];
+            static::$logger[$connectionName] = $config[self::LOGGER];
         } else {
-            static::$logger = new NullLogger();
+            static::$logger[$connectionName] = new NullLogger();
         }
     }
 
@@ -127,13 +127,13 @@ class PDOWrapper
     public static function nativeExecute($sql, $params = [], $lastInsertedId = false)
     {
         if (!is_array($params)) $params = [$params];
-        static::$logger->info($sql, $params);
+        static::logger()->info($sql, $params);
         try {
             $stmt = static::$db[static::$activeConnection]->prepare($sql);
             $stmt->execute($params);
             return (($lastInsertedId) ? static::$db[static::$activeConnection]->lastInsertId() : $stmt->rowCount());
         } catch (\PDOException $e) {
-            static::$logger->error($e->getMessage());
+            static::logger()->error($e->getMessage());
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -155,13 +155,22 @@ class PDOWrapper
     {
         $objectOrClass = (is_object($objectOrClass)) ? get_class($objectOrClass) : $objectOrClass;
         if (!is_array($params)) $params = [$params];
-        static::$logger->info($sql, $params);
+        static::logger()->info($sql, $params);
         try {
             $stmt = static::$db[static::$activeConnection]->prepare($sql);
             $stmt->execute($params);
             return new ResultSet($stmt, $objectOrClass);
         } catch (\PDOException $e) {
+            static::logger()->error($e->getMessage());
             throw new EQMException($e->getMessage(), $e->getCode(), $e);
         }
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function logger()
+    {
+        return static::$logger[static::$activeConnection];
     }
 }
