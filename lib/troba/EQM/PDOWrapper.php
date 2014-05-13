@@ -169,7 +169,7 @@ class PDOWrapper
     /**
      * @return LoggerInterface
      */
-    public function logger()
+    public static function logger()
     {
         return static::$logger[static::$activeConnection];
     }
