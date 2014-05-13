@@ -139,8 +139,6 @@ class EQM extends PDOWrapper
             }
             static::handleEvent('postInsert', $object);
             $result = $object;
-        } else {
-            $result = null;
         }
         return $result;
     }
@@ -375,7 +373,7 @@ class EQM extends PDOWrapper
      * @param object $object
      * @return object
      */
-        protected static function handleEvent($event, $object)
+    protected static function handleEvent($event, $object)
     {
         if (method_exists($object, $event)) $object->{$event}();
     }

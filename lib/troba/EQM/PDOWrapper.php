@@ -51,7 +51,11 @@ class PDOWrapper
      */
     public static function initialize($pdo, $config = [], $connectionName = 'default')
     {
-        static::$db[$connectionName] = $pdo;
+        if ($pdo instanceof \PDO) {
+            static::$db[$connectionName] = $pdo;
+        } else {
+            throw new EQMException('The given paramter is not a valid PDO connection object');
+        }
         static::$db[$connectionName]->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         if (array_key_exists(self::LOGGER, $config) && $config[self::LOGGER] instanceof LoggerInterface) {
             static::$logger = $config[self::LOGGER];
