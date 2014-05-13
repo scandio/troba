@@ -3,7 +3,9 @@
         <testsuite name="troba Test Suite">
             <file>./troba/Utils/StringUtilsTest.php</file>
             <file>./troba/EQM/ConventionHandlerTest.php</file>
+            <file>./troba/EQM/DDLTest.php</file>
             <file>./troba/EQM/EQMInitializeTest.php</file>
+            <file>./troba/EQM/ResultSetArrayTest.php</file>
             <file>./troba/EQM/EQMQueryArrayTest.php</file>
             <file>./troba/EQM/EQMInsertTest.php</file>
             <file>./troba/EQM/EQMUpdateTest.php</file>
