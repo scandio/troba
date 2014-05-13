@@ -10,12 +10,7 @@ use troba\EQM\ClassicConventionHandler;
 use troba\EQM\EQMException;
 
 // create logger object
-$logger = new Logger('troba-test', [
-        new StreamHandler(__DIR__ . '/troba-tests.log',
-            Logger::ERROR
-        )
-    ]
-);
+$logger = new Logger('troba-test', [new StreamHandler(__DIR__ . '/troba-tests.log', Logger::DEBUG)]);
 
 // Connect to two databases
 // default

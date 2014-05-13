@@ -12,7 +12,7 @@ class EQMInitializeTest extends \PHPUnit_Framework_TestCase
     public function testInitialize()
     {
         try {
-            EQM::initialize(null);
+            EQM::initialize(null, [], 'test0');
         } catch (EQMException $e) {
             $this->assertEquals($e->getMessage(), 'The given paramter is not a valid PDO connection object');
         }

@@ -60,14 +60,31 @@ class EQMQueryObjectTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(100, $result->activity);
     }
 
+    public function testQueryMore()
+    {
+        $result = EQM::query()->select('Company.id id, Project.id projectId, ProjectActivity.id projectActivityId')
+            ->from(new Company())
+            ->leftJoin(new Project(), 'Company.id = Project.companyId')
+            ->leftJoin(new ProjectActivity(), 'Project.id = ProjectActivity.projectId')
+            ->where('Company.id = ?',[28])
+            ->result();
+        $this->assertNull($result->one()->projectId);
+        $result = EQM::query(new Company())
+            ->where('Company.id < ?', [100])
+            ->andWhere('Company.name LIKE ?', ['A%'])
+            ->orWhere('Company.remark LIKE ?', ['A%'])
+            ->result();
+        $this->assertEquals($result->count(), 31);
+    }
+
     public function testSortedQuery()
     {
         $result = EQM::query('Company')->orderBy('id DESC')->one();
-        $this->assertEquals(CNT_COMPANY+6, $result->id);
+        $this->assertEquals(CNT_COMPANY + 6, $result->id);
         $result->name = 'ZZZ' . $result->name;
         EQM::update($result);
         $result = EQM::query('Company')->orderBy('name DESC')->one();
-        $this->assertEquals('ZZZ', substr($result->name, 0,3));
+        $this->assertEquals('ZZZ', substr($result->name, 0, 3));
     }
 
     public function testGroupedQuery()

@@ -17,8 +17,9 @@ class DDLTest extends \PHPUnit_Framework_TestCase
             new \PDO(
                 'mysql:host=localhost;dbname=orm_test', 'root', 'root',
                 [\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"]
-            )
+            ), [], 'ddl-connection'
         );
+        DDL::activateConnection('ddl-connection');
     }
 
     public function testCreate()
@@ -47,6 +48,7 @@ class DDLTest extends \PHPUnit_Framework_TestCase
         DDL::drop(new Activity());
         $meta = DDL::tableMeta(new Activity());
         $this->assertEmpty($meta->getColumns());
+        DDL::activateConnection();
     }
 }
  
