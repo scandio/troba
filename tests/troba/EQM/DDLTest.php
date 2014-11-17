@@ -34,6 +34,13 @@ class DDLTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('id', $meta->getColumns());
         $this->assertArrayHasKey('date', $meta->getColumns());
         $this->assertArrayHasKey('note', $meta->getColumns());
+        DDL::create('TestTable', [
+           'id' => [DDL::INTEGER, DDL::AUTO_INCREMENT, DDL::PRIMARY],
+            'uniqueValue' =>[DDL::STRING, DDL::NOT_NULL, DDL::UNIQUE]
+        ]);
+        $meta = DDL::tableMeta('TestTable');
+        $this->assertArrayHasKey('id', $meta->getColumns());
+        $this->assertArrayHasKey('uniqueValue', $meta->getColumns());
     }
 
     public function testAdd()
@@ -47,6 +54,9 @@ class DDLTest extends \PHPUnit_Framework_TestCase
     {
         DDL::drop(new Activity());
         $meta = DDL::tableMeta(new Activity());
+        $this->assertEmpty($meta->getColumns());
+        DDL::drop('TestTable');
+        $meta = DDL::tableMeta('TestTable');
         $this->assertEmpty($meta->getColumns());
         DDL::activateConnection();
     }
