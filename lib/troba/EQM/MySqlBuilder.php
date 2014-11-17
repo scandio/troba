@@ -259,7 +259,7 @@ class MySqlBuilder implements SqlBuilderInterface
             $null = true;
             foreach ($definition as $element) {
                 if ($element == 'string') {
-                    $result .= ' varchar(511)';
+                    $result .= ' varchar(255)';
                 } elseif ($element == 'text') {
                     $result .= ' text';
                 } elseif ($element == 'integer') {
