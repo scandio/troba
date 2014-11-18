@@ -1,13 +1,14 @@
 <?php
 
 namespace troba\Model;
+
 use troba\EQM\EQM;
 
 /**
  * use this trait if you entity class should have finders
  */
-trait Finders
-{
+trait Finders {
+
     use Queries;
 
     /**
@@ -16,8 +17,7 @@ trait Finders
      * @param array|mixed $primaries a single value or an assoc array
      * @return object the requested entity
      */
-    public static function find($primaries)
-    {
+    public static function find($primaries) {
         return EQM::queryByPrimary(get_called_class(), $primaries);
     }
 
@@ -27,8 +27,7 @@ trait Finders
      * @param int $offset optional the offset
      * @return \troba\EQM\AbstractResultSet
      */
-    public static function findAll($order = [], $limit = null, $offset = null)
-    {
+    public static function findAll($order = [], $limit = null, $offset = null) {
         return static::query()->orderBy($order)->result($limit, $offset);
     }
 
@@ -43,8 +42,7 @@ trait Finders
      * @param int $offset optional
      * @return \troba\EQM\AbstractResultSet
      */
-    public static function findBy($property, $value, $order = [], $limit = null, $offset = null)
-    {
+    public static function findBy($property, $value, $order = [], $limit = null, $offset = null) {
         return static::query()->where($property . ' = ?', $value)->orderBy($order)->result($limit, $offset);
     }
 
@@ -55,8 +53,7 @@ trait Finders
      * @param array $args [ params, order, limit, offset ]
      * @return \troba\EQM\AbstractResultSet
      */
-    public static function __callStatic($name, $args)
-    {
+    public static function __callStatic($name, $args) {
         $result = null;
         $parts = explode('findBy', $name);
         if (count($parts) == 2 && empty($parts[0])) {

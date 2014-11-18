@@ -7,10 +7,9 @@ use troba\EQM\EQM;
 use troba\EQM\EQMException;
 use troba\EQM\MySqlBuilder;
 
-class EQMInitializeTest extends \PHPUnit_Framework_TestCase
-{
-    public function testInitialize()
-    {
+class EQMInitializeTest extends \PHPUnit_Framework_TestCase {
+
+    public function testInitialize() {
         try {
             EQM::initialize(null, [], 'test0');
         } catch (EQMException $e) {

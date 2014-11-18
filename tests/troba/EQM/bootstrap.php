@@ -132,21 +132,17 @@ EQM::nativeExecute("
 EQM::activateConnection();
 
 // Define classes
-class Company
-{
+class Company {
 }
 
-class AnotherCompany
-{
+class AnotherCompany {
     private $__table = 'Company';
 }
 
-class Project
-{
+class Project {
 }
 
-class ProjectActivity
-{
+class ProjectActivity {
 }
 
 // Generate test data
@@ -154,8 +150,7 @@ define('CNT_COMPANY', 27);
 define('CNT_PROJECT', 9);
 define('CNT_PROJECT_ACTIVITY', 7);
 
-function generate($max_i, $max_j, $max_k)
-{
+function generate($max_i, $max_j, $max_k) {
     $c = new Company();
     for ($i = 0; $i < $max_i; $i++) {
         $c->name = ((isset($c->id)) ? $c->id + 1 : 1) . ' A Company Name';

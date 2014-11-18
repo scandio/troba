@@ -5,8 +5,8 @@ namespace troba\EQM;
 /**
  * A OO wrapper with chaining for EQM::query
  */
-class Query
-{
+class Query {
+
     /**
      * @var null|object|string the class name or an object
      */
@@ -70,8 +70,7 @@ class Query
     /**
      * @param null|object|string $entity optional
      */
-    public function __construct($entity = null)
-    {
+    public function __construct($entity = null) {
         $this->entity = ($entity) ? $entity : '\StdClass';
     }
 
@@ -79,8 +78,7 @@ class Query
      * @param string $fields the fields to be read
      * @return Query
      */
-    public function select($fields = null)
-    {
+    public function select($fields = null) {
         $this->fields = $fields;
         return $this;
     }
@@ -90,8 +88,7 @@ class Query
      * @param string $query the ON part of a joined query
      * @return Query
      */
-    public function innerJoin($entity, $query)
-    {
+    public function innerJoin($entity, $query) {
         $this->joins[] = EQM::join(EQM::INNER_JOIN, $entity, $query);
         return $this;
     }
@@ -101,8 +98,7 @@ class Query
      * @param string $query the ON part of a joined query
      * @return Query
      */
-    public function leftJoin($entity, $query)
-    {
+    public function leftJoin($entity, $query) {
         $this->joins[] = EQM::join(EQM::LEFT_JOIN, $entity, $query);
         return $this;
     }
@@ -112,8 +108,7 @@ class Query
      * @param string $query the ON part of a joined query
      * @return Query
      */
-    public function rightJoin($entity, $query)
-    {
+    public function rightJoin($entity, $query) {
         $this->joins[] = EQM::join(EQM::RIGHT_JOIN, $entity, $query);
         return $this;
     }
@@ -122,8 +117,7 @@ class Query
      * @param object|string $entity the class name or an object
      * @return Query
      */
-    public function from($entity)
-    {
+    public function from($entity) {
         $this->from = $entity;
         return $this;
     }
@@ -133,8 +127,7 @@ class Query
      * @param array|mixed $params optional simple value or array or assoc array of param values
      * @return Query
      */
-    public function where($query, $params = [])
-    {
+    public function where($query, $params = []) {
         $this->query = '( ' . $query . ' )';
         $this->queryParams = $params;
         return $this;
@@ -145,8 +138,7 @@ class Query
      * @param array|mixed $params optional simple value or array or assoc array of param values
      * @return Query
      */
-    public function andWhere($query, $params = [])
-    {
+    public function andWhere($query, $params = []) {
         $this->query .= ' AND ( ' . $query . ' )';
         $this->queryParams = array_merge($this->queryParams, $params);
         return $this;
@@ -157,8 +149,7 @@ class Query
      * @param array|mixed $params optional simple value or array or assoc array of param values
      * @return Query
      */
-    public function orWhere($query, $params = [])
-    {
+    public function orWhere($query, $params = []) {
         $this->query .= ' OR ( ' . $query . ' )';
         $this->queryParams = array_merge($this->queryParams, $params);
         return $this;
@@ -168,8 +159,7 @@ class Query
      * @param array|string $group the GROUP BY part of a sql statement
      * @return Query
      */
-    public function groupBy($group = [])
-    {
+    public function groupBy($group = []) {
         $this->group = $group;
         return $this;
     }
@@ -179,8 +169,7 @@ class Query
      * @param array|mixed $params optional simple value or array or assoc array of param values
      * @return Query
      */
-    public function having($query, $params = [])
-    {
+    public function having($query, $params = []) {
         $this->having = $query;
         $this->havingParams = $params;
         return $this;
@@ -190,8 +179,7 @@ class Query
      * @param array|string $order the ORDER BY part of the sql statement
      * @return Query
      */
-    public function orderBy($order)
-    {
+    public function orderBy($order) {
         $this->order = $order;
         return $this;
     }
@@ -201,8 +189,7 @@ class Query
      * @param int|null $offset optional the starting point
      * @return Query
      */
-    public function limit($limit, $offset = null)
-    {
+    public function limit($limit, $offset = null) {
         $this->limit = $limit;
         $this->offset = $offset;
         return $this;
@@ -213,8 +200,7 @@ class Query
      * @param int|null $offset optional the starting point
      * @return AbstractResultSet
      */
-    public function result($limit = null, $offset = null)
-    {
+    public function result($limit = null, $offset = null) {
         if (!is_null($limit || $offset)) {
             $this->limit(
                 ($limit) ? $limit : $this->limit,
@@ -244,8 +230,7 @@ class Query
      * @param int $offset optional
      * @return array
      */
-    public function all($limit = null, $offset = null)
-    {
+    public function all($limit = null, $offset = null) {
         return $this->result($limit, $offset)->all();
     }
 
@@ -256,8 +241,7 @@ class Query
      * @param int $offset
      * @return object
      */
-    public function one($limit = null, $offset = null)
-    {
+    public function one($limit = null, $offset = null) {
         return $this->result($limit, $offset)->one();
     }
 }

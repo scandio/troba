@@ -2,27 +2,23 @@
 
 use troba\EQM\EQM;
 
-class Company
-{
+class Company {
 }
 
-class AnotherCompany
-{
+class AnotherCompany {
+
     private $__table = 'Company';
 }
 
-class Project
-{
+class Project {
 }
 
-class ProjectActivity
-{
+class ProjectActivity {
 }
 
-class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
-{
-    public function testSimpleByString()
-    {
+class EQMQueryArrayTest extends PHPUnit_Framework_TestCase {
+
+    public function testSimpleByString() {
         $this->assertEquals(CNT_COMPANY, count(EQM::queryByArray([
             'entity' => 'Company'
         ])->all()));
@@ -44,8 +40,7 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
         ])->count());
     }
 
-    public function testSimpleByStringAndNamespace()
-    {
+    public function testSimpleByStringAndNamespace() {
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'Bootstrap\Company'
         ])->count());
@@ -63,46 +58,43 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
         ])->count());
     }
 
-    public function testSimpleByObject()
-    {
+    public function testSimpleByObject() {
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new Company()
+            'entity' => Company::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new AnotherCompany()
+            'entity' => AnotherCompany::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY * CNT_PROJECT, EQM::queryByArray([
-            'entity' => new Project()
+            'entity' => Project::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
-            'entity' => new ProjectActivity()
+            'entity' => ProjectActivity::class
         ])->count());
     }
 
-    public function testSimpleByObjectAndNamespace()
-    {
+    public function testSimpleByObjectAndNamespace() {
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new Bootstrap\Company()
+            'entity' => Bootstrap\Company::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new Bootstrap\AnotherCompany()
+            'entity' => Bootstrap\AnotherCompany::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY * CNT_PROJECT, EQM::queryByArray([
-            'entity' => new Bootstrap\Project()
+            'entity' => Bootstrap\Project::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity()
+            'entity' => Bootstrap\ProjectActivity::class
         ])->count());
     }
 
-    public function testSimpleWithClassicConvention()
-    {
+    public function testSimpleWithClassicConvention() {
         EQM::activateConnection('second_db');
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
             'entity' => 'Company'
@@ -113,17 +105,16 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
         ])->count());
 
         $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
-            'entity' => new ProjectActivity()
+            'entity' => ProjectActivity::class
         ])->count());
 
         $this->assertEquals(CNT_COMPANY * CNT_PROJECT * CNT_PROJECT_ACTIVITY, EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity()
+            'entity' => Bootstrap\ProjectActivity::class
         ])->count());
         EQM::activateConnection();
     }
 
-    public function testQueryWithSimpleParams()
-    {
+    public function testQueryWithSimpleParams() {
         $this->assertEquals(4, EQM::queryByArray([
             'entity' => 'Company',
             'query' => 'name = ?',
@@ -131,20 +122,19 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
         ])->one()->id);
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'Company.remark like ?',
             'params' => 'A remark for%'
         ])->count());
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new AnotherCompany(),
+            'entity' => AnotherCompany::class,
             'query' => 'AnotherCompany.remark like ?',
             'params' => 'A remark for%'
         ])->count());
     }
 
-    public function testQueryWithNamedParams()
-    {
+    public function testQueryWithNamedParams() {
         $this->assertEquals(4, EQM::queryByArray([
             'entity' => 'Company',
             'query' => 'name = :name',
@@ -152,20 +142,19 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
         ])->one()->id);
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'Company.remark like :remark',
             'params' => ['remark' => 'A remark for%']
         ])->count());
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new AnotherCompany(),
+            'entity' => AnotherCompany::class,
             'query' => 'AnotherCompany.remark like :remark',
             'params' => ['remark' => 'A remark for%']
         ])->count());
     }
 
-    public function testQueryWithParamsClassic()
-    {
+    public function testQueryWithParamsClassic() {
         EQM::activateConnection('second_db');
         $this->assertEquals(4, EQM::queryByArray([
             'entity' => 'Company',
@@ -174,33 +163,32 @@ class EQMQueryArrayTest extends PHPUnit_Framework_TestCase
         ])->one()->id);
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'Company.remark like :remark',
             'params' => ['remark' => 'A remark for%']
         ])->count());
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new \Bootstrap\Company(),
+            'entity' => \Bootstrap\Company::class,
             'query' => 'Company.remark like ?',
             'params' => 'A remark for%'
         ])->count());
         EQM::activateConnection();
     }
 
-    public function testQueryWithOrder()
-    {
+    public function testQueryWithOrder() {
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new \Bootstrap\Project(),
+            'entity' => \Bootstrap\Project::class,
             'order' => 'companyId DESC'
         ])->one()->companyId);
 
         $this->assertEquals(CNT_COMPANY, EQM::queryByArray([
-            'entity' => new AnotherCompany(),
+            'entity' => AnotherCompany::class,
             'order' => 'AnotherCompany.id DESC'
         ])->one()->id);
 
         $this->assertEquals(1, EQM::queryByArray([
-            'entity' => new \Bootstrap\Project(),
+            'entity' => \Bootstrap\Project::class,
             'order' => 'companyId'
         ])->one()->companyId);
     }

@@ -2,10 +2,9 @@
 
 use troba\EQM\EQM;
 
-class EQMTransactionTest extends PHPUnit_Framework_TestCase
-{
-    public function testDefault()
-    {
+class EQMTransactionTest extends PHPUnit_Framework_TestCase {
+
+    public function testDefault() {
         $companyCount = EQM::queryByArray([
             'entity' => 'Company'
         ])->count();
@@ -34,8 +33,7 @@ class EQMTransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($companyCount, $afterCompanyCount);
     }
 
-    public function testComplex()
-    {
+    public function testComplex() {
         $companies = EQM::queryByArray([
             'entity' => 'Company'
         ]);
@@ -45,7 +43,7 @@ class EQMTransactionTest extends PHPUnit_Framework_TestCase
             $company->remark = 'Transaction remark';
             EQM::update($company);
             $projects = EQM::queryByArray([
-                'entity' => new Project(),
+                'entity' => Project::class,
                 'query' => 'id = ?',
                 'params' => $company->id
             ]);

@@ -3,19 +3,18 @@
 use troba\EQM\EQM;
 use troba\EQM\EQMException;
 
-class EQMDeleteTest extends PHPUnit_Framework_TestCase
-{
-    public function testDeleteDefault()
-    {
+class EQMDeleteTest extends PHPUnit_Framework_TestCase {
+
+    public function testDeleteDefault() {
         $companies = EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'order' => 'id'
         ]);
         $companiesCount = $companies->count();
         $company = $companies->one();
 
         $projects = EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -24,7 +23,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         $project = $projects->one();
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -35,7 +34,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         }
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -44,7 +43,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
 
         EQM::delete($project);
         $projects = EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -53,17 +52,16 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
     }
 
 
-    public function testDeleteDefaultWithNamespace()
-    {
+    public function testDeleteDefaultWithNamespace() {
         $companies = EQM::queryByArray([
-            'entity' => new Bootstrap\Company(),
+            'entity' => Bootstrap\Company::class,
             'order' => 'id'
         ]);
         $companiesCount = $companies->count();
         $company = $companies->one();
 
         $projects = EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -72,7 +70,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         $project = $projects->one();
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -83,7 +81,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         }
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -92,7 +90,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
 
         EQM::delete($project);
         $projects = EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -100,18 +98,17 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($projectsCount - 1, $projects->count());
     }
 
-    public function testDeleteClassic()
-    {
+    public function testDeleteClassic() {
         EQM::activateConnection('second_db');
         $companies = EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'order' => 'id'
         ]);
         $companiesCount = $companies->count();
         $company = $companies->one();
 
         $projects = EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -120,7 +117,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         $project = $projects->one();
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -131,7 +128,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         }
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -140,7 +137,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
 
         EQM::delete($project);
         $projects = EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -149,18 +146,17 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         EQM::activateConnection();
     }
 
-    public function testDeleteClassicWithNamespace()
-    {
+    public function testDeleteClassicWithNamespace() {
         EQM::activateConnection('second_db');
         $companies = EQM::queryByArray([
-            'entity' => new Bootstrap\Company(),
+            'entity' => Bootstrap\Company::class,
             'order' => 'id'
         ]);
         $companiesCount = $companies->count();
         $company = $companies->one();
 
         $projects = EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -169,7 +165,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         $project = $projects->one();
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -180,7 +176,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         }
 
         $projectActivites = EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'ProjectActivity.projectId = ?',
             'params' => $project->id
         ]);
@@ -189,7 +185,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
 
         EQM::delete($project);
         $projects = EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'Project.companyId = ?',
             'params' => $company->id
         ]);
@@ -198,8 +194,7 @@ class EQMDeleteTest extends PHPUnit_Framework_TestCase
         EQM::activateConnection();
     }
 
-    public function testDeleteError()
-    {
+    public function testDeleteError() {
         $company = new Company();
         try {
             EQM::delete($company);

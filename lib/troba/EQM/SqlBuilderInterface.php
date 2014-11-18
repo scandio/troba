@@ -5,8 +5,8 @@ namespace troba\EQM;
 /**
  * All SQL relevant statement generation as one "driver"
  */
-interface SqlBuilderInterface
-{
+interface SqlBuilderInterface {
+
     /**
      * Generates a sql statement for inserting records
      *

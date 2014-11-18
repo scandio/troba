@@ -6,36 +6,34 @@ use troba\EQM\EQMException;
 use troba\Model\Finders;
 use troba\Model\Persisters;
 
-class Company
-{
+class Company {
+
     use Finders;
     use Persisters;
 }
 
-class Project
-{
+class Project {
+
     use Finders;
     use Persisters;
 }
 
-class ProjectActivity
-{
+class ProjectActivity {
+
     use Finders;
     use Persisters;
 }
 
-class ModelPersistersTest extends \PHPUnit_Framework_TestCase
-{
-    public function testInsert()
-    {
+class ModelPersistersTest extends \PHPUnit_Framework_TestCase {
+
+    public function testInsert() {
         $c = new Company();
         $c->name = 'Model Persister Company';
         $c->insert();
         $this->assertNotNull($c->id);
     }
 
-    public function testUpdate()
-    {
+    public function testUpdate() {
         $c = Company::findBy('name', 'Model Persister Company')->one();
         $c->name = 'Model Persister Company updated';
         $c->update();
@@ -43,8 +41,7 @@ class ModelPersistersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($c2->name, 'Model Persister Company updated');
     }
 
-    public function testSave()
-    {
+    public function testSave() {
         $c = new Company();
         $c->name = 'Model Persister Company 2';
         $c->save();
@@ -55,16 +52,14 @@ class ModelPersistersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($c2->name, 'Model Persister Company 2 updated');
     }
 
-    public function testDelete()
-    {
+    public function testDelete() {
         $c = Company::findBy('name', 'Model Persister Company 2 updated')->one();
         $c->delete();
         $cList = Company::findBy('name', 'Model Persister Company 2 updated');
         $this->assertEquals($cList->count(), 0);
     }
 
-    public function testNoSave()
-    {
+    public function testNoSave() {
         $p = new Project();
         $p->id = 'ABC';
         $p->name = 'abc';

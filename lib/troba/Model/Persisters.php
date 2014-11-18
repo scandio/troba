@@ -5,15 +5,14 @@ namespace troba\Model;
 use troba\EQM\EQM;
 use troba\EQM\EQMException;
 
-trait Persisters
-{
+trait Persisters {
+
     /**
      * inserts a record to the table
      *
      * @return bool|object if auto_increment
      */
-    public function insert()
-    {
+    public function insert() {
         return EQM::insert($this);
     }
 
@@ -22,8 +21,7 @@ trait Persisters
      *
      * @return bool
      */
-    public function update()
-    {
+    public function update() {
         return EQM::update($this);
     }
 
@@ -32,8 +30,7 @@ trait Persisters
      *
      * @return bool
      */
-    public function delete()
-    {
+    public function delete() {
         return EQM::delete($this);
     }
 
@@ -44,9 +41,8 @@ trait Persisters
      * @return bool|object
      * @throws EQMException
      */
-    public function save()
-    {
-        $tableMeta = EQM::tableMeta($this);
+    public function save() {
+        $tableMeta = EQM::tableMeta(get_class($this));
         if ($tableMeta->hasAutoIncrement()) {
             if (empty($this->{$tableMeta->getAutoIncrement()})) {
                 return $this->insert();
@@ -56,6 +52,6 @@ trait Persisters
         } else {
             throw new EQMException('save() is not possible for entities without auto increment primary key', 10001);
         }
-}
+    }
 
 }

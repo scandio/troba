@@ -6,7 +6,6 @@ namespace troba\EQM;
  * EQM exception
  * TODO better exception handling needed
  */
-class EQMException extends \PDOException
-{
+class EQMException extends \PDOException {
 
 }

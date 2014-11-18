@@ -5,8 +5,8 @@ namespace troba\EQM;
 /**
  * an EQM with additional methods for database definition and migrations
  */
-class DDL extends EQM
-{
+class DDL extends EQM {
+
     const INTEGER = 'integer';
     const STRING = 'string';
     const TEXT = 'text';
@@ -20,127 +20,116 @@ class DDL extends EQM
     const INDEX = 'index';
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param array $columns
      * @return bool|int
      */
-    public static function create($entity, $columns = [])
-    {
+    public static function create($className, $columns = []) {
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->create(static::tableName($entity), $columns);
+            ->create(static::tableName($className), $columns);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param string $column
      * @param array $definition
      * @return bool|int
      */
-    public static function addColumn($entity, $column, $definition)
-    {
+    public static function addColumn($className, $column, $definition) {
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->addColumn(static::tableName($entity), $column, $definition);
+            ->addColumn(static::tableName($className), $column, $definition);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param string $column
      * @return bool|int
      */
-    public static function removeColumn($entity, $column)
-    {
+    public static function removeColumn($className, $column) {
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->dropColumn(static::tableName($entity), $column);
+            ->dropColumn(static::tableName($className), $column);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param string $column
      * @param string $newProperty
      * @param array $definition
      * @return bool|int
      */
-    public static function changeColumn($entity, $column, $newProperty, $definition)
-    {
+    public static function changeColumn($className, $column, $newProperty, $definition) {
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->changeColumn(static::tableName($entity), $column, $newProperty, $definition);
+            ->changeColumn(static::tableName($className), $column, $newProperty, $definition);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $fromEntity
-     * @param object|string $toEntity
+     * @param string $fromClassName
+     * @param string $toClassName
      * @param array $keys
      * @return bool|int
      */
-    public static function addReference($fromEntity, $toEntity, $keys = [])
-    {
+    public static function addReference($fromClassName, $toClassName, $keys = []) {
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->addReference(static::tableName($fromEntity), static::tableName($toEntity), $keys);
+            ->addReference(static::tableName($fromClassName), static::tableName($toClassName), $keys);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $fromEntity
-     * @param object|string $toEntity
+     * @param string $fromClassName
+     * @param string $toClassName
      * @return bool|int
      */
-    public static function removeReference($fromEntity, $toEntity)
-    {
+    public static function removeReference($fromClassName, $toClassName) {
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->removeReference(static::tableName($fromEntity), static::tableName($toEntity));
+            ->removeReference(static::tableName($fromClassName), static::tableName($toClassName));
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param array|string $columns
      * @param string $indexType optional [DDL::INDEX | DDL::UNIQUE | DDL::PRIMARY]
      * @return bool|int
      */
-    public static function addIndex($entity, $columns, $indexType = DDL::INDEX)
-    {
+    public static function addIndex($className, $columns, $indexType = DDL::INDEX) {
         $columns = (is_array($columns)) ? $columns : [$columns];
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->addIndex(static::tableName($entity), $columns, $indexType);
+            ->addIndex(static::tableName($className), $columns, $indexType);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param array|string $columns
      * @param string $indexType optional [DDL::INDEX | DDL::UNIQUE | DDL::PRIMARY]
      * @return bool|int
      */
-    public static function removeIndex($entity, $columns, $indexType = DDL::INDEX)
-    {
+    public static function removeIndex($className, $columns, $indexType = DDL::INDEX) {
         $columns = (is_array($columns)) ? $columns : [$columns];
         $sql = static::$sqlBuilder[static::$activeConnection]
-            ->removeIndex(static::tableName($entity), $columns, $indexType);
+            ->removeIndex(static::tableName($className), $columns, $indexType);
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @return bool|int
      */
-    public static function drop($entity)
-    {
-        $sql = static::$sqlBuilder[static::$activeConnection]->drop(static::tableName($entity));
+    public static function drop($className) {
+        $sql = static::$sqlBuilder[static::$activeConnection]->drop(static::tableName($className));
         return static::nativeExecute($sql);
     }
 
     /**
-     * @param object|string $entity
+     * @param string $className
      * @param string $file
      * @param array $options optional
      */
-    public static function generateModel($entity, $file, $options = [])
-    {
+    public static function generateModel($className, $file, $options = []) {
 
     }
-
 }

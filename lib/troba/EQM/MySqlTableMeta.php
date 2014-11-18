@@ -5,8 +5,8 @@ namespace troba\EQM;
 /**
  * Table meta information for MySQL tables
  */
-class MySqlTableMeta implements TableMetaInterface
-{
+class MySqlTableMeta implements TableMetaInterface {
+
     /**
      * @var ColumnMeta[]
      */
@@ -25,8 +25,7 @@ class MySqlTableMeta implements TableMetaInterface
     /**
      * @param \StdClass[] $columns
      */
-    public function __construct($columns)
-    {
+    public function __construct($columns) {
         foreach ($columns as $column) {
             $this->columns[$column->column_name] = new ColumnMeta($column->column_name, $column->column_default,
                 $column->is_nullable, $column->data_type, $column->column_type, $column->column_key, $column->extra);
@@ -40,8 +39,7 @@ class MySqlTableMeta implements TableMetaInterface
      *
      * @return ColumnMeta[]
      */
-    public function getColumns()
-    {
+    public function getColumns() {
         return $this->columns;
     }
 
@@ -49,32 +47,28 @@ class MySqlTableMeta implements TableMetaInterface
      * @param string $column
      * @return null|ColumnMeta
      */
-    public function getColumnMeta($column)
-    {
+    public function getColumnMeta($column) {
         return array_key_exists($column, $this->columns) ? $this->columns[$column] : null;
     }
 
     /**
      * @return array
      */
-    public function getPrimary()
-    {
+    public function getPrimary() {
         return $this->primaries;
     }
 
     /**
      * @return null|string
      */
-    public function getAutoIncrement()
-    {
+    public function getAutoIncrement() {
         return $this->autoIncrement;
     }
 
     /**
      * @return bool
      */
-    public function  hasAutoIncrement()
-    {
+    public function  hasAutoIncrement() {
         return (!is_null($this->autoIncrement));
     }
 }

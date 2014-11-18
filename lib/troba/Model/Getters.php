@@ -4,16 +4,15 @@ namespace troba\Model;
 
 use troba\EQM\EQMException;
 
-trait Getters
-{
+trait Getters {
+
     /**
      * calls Class::$name()
      *
      * @param string $name the name of a requested property
      * @return mixed the result
      */
-    public function __get($name)
-    {
+    public function __get($name) {
         return $this->__call($name);
     }
 
@@ -25,8 +24,7 @@ trait Getters
      * @throws \Exception
      * @return mixed
      */
-    public function __call($name, $args = [])
-    {
+    public function __call($name, $args = []) {
         if (method_exists($this, $method = 'get' . ucfirst($name))) {
             return $this->{$method}($args);
         } else {

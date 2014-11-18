@@ -5,8 +5,7 @@ namespace troba\EQM;
 /**
  * All SQL relevant statement generation for MySQL
  */
-class MySqlBuilder implements SqlBuilderInterface
-{
+class MySqlBuilder implements SqlBuilderInterface {
 
     /**
      * Creates a SQL statement for inserting fields as a record into a table
@@ -16,11 +15,10 @@ class MySqlBuilder implements SqlBuilderInterface
      *
      * @return string the INSERT SQL statement with named parameters
      */
-    public function insert($table, $fields = [])
-    {
+    public function insert($table, $fields = []) {
         $table = $this->tableNameDef($table);
         return "INSERT INTO {$table->table} (" . implode(', ', array_keys($fields)) .
-            ") VALUES ( :" . implode(', :', array_keys($fields)) . ")";
+        ") VALUES ( :" . implode(', :', array_keys($fields)) . ")";
     }
 
     /**
@@ -32,8 +30,7 @@ class MySqlBuilder implements SqlBuilderInterface
      *
      * @return string the UPDATE SQL statement with named parameters
      */
-    public function update($table, $query, $fields = [])
-    {
+    public function update($table, $query, $fields = []) {
         $table = $this->tableNameDef($table);
         $setFields = array_map(function ($value) {
             return $value . ' = :' . $value;
@@ -48,8 +45,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $query optional the query the defines the records to be deleted
      * @return string the DELETE SQL statement with parameters
      */
-    public function delete($table, $query = null)
-    {
+    public function delete($table, $query = null) {
         $table = $this->tableNameDef($table);
         return "DELETE FROM {$table->table}" . (!is_null($query) ? " WHERE {$query}" : "");
     }
@@ -70,8 +66,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @return string the SELECT SQL statement
      */
     public function select($table, $fields, $from = null, $joins = [], $query = null, $group = [],
-                           $having = null, $order = [], $limit = null, $offset = null)
-    {
+                           $having = null, $order = [], $limit = null, $offset = null) {
         if (!is_null($from)) {
             $table = $this->tableNameDef($from);
         } else {
@@ -89,13 +84,13 @@ class MySqlBuilder implements SqlBuilderInterface
         if (!is_null($offset)) $limiter .= $offset . ', ';
         if (!is_null($limit)) $limiter .= $limit;
         return "SELECT {$fields} " .
-            "FROM {$table->table} {$table->alias}" .
-            (!empty($joinString) ? $joinString : '') .
-            (!empty($query) ? " WHERE {$query}" : "") .
-            (!empty($groupString) ? " GROUP BY {$groupString}" : "") .
-            (!empty($having) ? " HAVING {$having}" : "") .
-            (!empty($orderString) ? " ORDER BY {$orderString}" : "") .
-            (!is_null($limiter) ? " LIMIT {$limiter}" : "");
+        "FROM {$table->table} {$table->alias}" .
+        (!empty($joinString) ? $joinString : '') .
+        (!empty($query) ? " WHERE {$query}" : "") .
+        (!empty($groupString) ? " GROUP BY {$groupString}" : "") .
+        (!empty($having) ? " HAVING {$having}" : "") .
+        (!empty($orderString) ? " ORDER BY {$orderString}" : "") .
+        (!is_null($limiter) ? " LIMIT {$limiter}" : "");
     }
 
     /**
@@ -104,8 +99,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $table
      * @return string DROP TABLE SQL statement
      */
-    public function drop($table)
-    {
+    public function drop($table) {
         return "DROP TABLE {$this->tableNameDef($table)->table};";
     }
 
@@ -116,8 +110,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param array $columns [<name>, [<column definition>]]
      * @return string CREATE TABLE SQL statement
      */
-    public function create($table, $columns = [])
-    {
+    public function create($table, $columns = []) {
         $columnString = '';
         $primaries = [];
         foreach ($columns as $column => $definition) {
@@ -139,18 +132,16 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param array|string $definition
      * @return string ALTER TABLE statement
      */
-    public function addColumn($table, $column, $definition)
-    {
+    public function addColumn($table, $column, $definition) {
         return "ALTER TABLE {$this->tableNameDef($table)->table} " .
-            "ADD {$column}{$this->getColumnDef($definition)}";
+        "ADD {$column}{$this->getColumnDef($definition)}";
     }
 
     /** Returns a SQL language part for different indexes
      * @param string $indexType
      * @return string the converted string for the SQL statement
      */
-    protected function getIndexCommand($indexType)
-    {
+    protected function getIndexCommand($indexType) {
         if ($indexType == 'index') {
             $indexType = 'INDEX';
         } elseif ($indexType == 'unique') {
@@ -169,11 +160,10 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $indexType optional [index|unique|primary]
      * @return string ALTER TABLE SQL statement
      */
-    public function addIndex($table, $columns, $indexType = 'index')
-    {
+    public function addIndex($table, $columns, $indexType = 'index') {
         return "ALTER TABLE {$this->tableNameDef($table)->table} ADD {$this->getIndexCommand($indexType)} " .
-            implode('_', $columns) . " (" .
-            implode(', ', $columns) . ");";
+        implode('_', $columns) . " (" .
+        implode(', ', $columns) . ");";
     }
 
     /**
@@ -184,10 +174,9 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $indexType optional [index|unique|primary]
      * @return string
      */
-    public function removeIndex($table, $columns, $indexType = 'index')
-    {
+    public function removeIndex($table, $columns, $indexType = 'index') {
         return "ALTER TABLE {$this->tableNameDef($table)->table} DROP {$this->getIndexCommand($indexType)} " .
-            (($indexType == 'primary') ? '' : implode('_', $columns));
+        (($indexType == 'primary') ? '' : implode('_', $columns));
     }
 
     /**
@@ -198,11 +187,10 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param array $keys
      * @return string
      */
-    public function addReference($fromTable, $toTable, $keys)
-    {
+    public function addReference($fromTable, $toTable, $keys) {
         return "ALTER TABLE {$this->tableNameDef($fromTable)->table} " .
-            "ADD CONSTRAINT {$this->tableNameDef($fromTable)->table}_{$this->tableNameDef($toTable)->table} " .
-            "FOREIGN KEY ({$keys[0]}) REFERENCES {$this->tableNameDef($toTable)->table}({$keys[1]})";
+        "ADD CONSTRAINT {$this->tableNameDef($fromTable)->table}_{$this->tableNameDef($toTable)->table} " .
+        "FOREIGN KEY ({$keys[0]}) REFERENCES {$this->tableNameDef($toTable)->table}({$keys[1]})";
     }
 
     /**
@@ -212,10 +200,9 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $toTable
      * @return string
      */
-    public function removeReference($fromTable, $toTable)
-    {
+    public function removeReference($fromTable, $toTable) {
         return "ALTER TABLE {$this->tableNameDef($fromTable)->table} " .
-            "DROP FOREIGN KEY {$this->tableNameDef($fromTable)->table}_{$this->tableNameDef($toTable)->table};";
+        "DROP FOREIGN KEY {$this->tableNameDef($fromTable)->table}_{$this->tableNameDef($toTable)->table};";
     }
 
     /**
@@ -227,10 +214,9 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param array|string $definition
      * @return string
      */
-    public function changeColumn($table, $column, $newColumn, $definition)
-    {
+    public function changeColumn($table, $column, $newColumn, $definition) {
         return "ALTER TABLE {$this->tableNameDef($table)->table} " .
-            "CHANGE {$column} {$newColumn}{$this->getColumnDef($definition)}";
+        "CHANGE {$column} {$newColumn}{$this->getColumnDef($definition)}";
     }
 
     /**
@@ -240,8 +226,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $column
      * @return string
      */
-    public function dropColumn($table, $column)
-    {
+    public function dropColumn($table, $column) {
         return "ALTER TABLE {$this->tableNameDef($table)->table} DROP {$column}";
     }
 
@@ -251,8 +236,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param array|string $definition
      * @return string
      */
-    protected function getColumnDef($definition)
-    {
+    protected function getColumnDef($definition) {
         $definition = (is_array($definition)) ? $definition : [$definition];
         $result = '';
         if (count($definition) > 0) {
@@ -292,17 +276,16 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param \PDO $pdo
      * @return MySqlTableMeta|TableMetaInterface
      */
-    public function tableMeta($table, $pdo)
-    {
+    public function tableMeta($table, $pdo) {
         $stmt = $pdo->prepare("SELECT database()");
         $stmt->execute();
-        $dbName = $stmt->fetch(\PDO::FETCH_ASSOC|\PDO::FETCH_PROPS_LATE)['database()'];
+        $dbName = $stmt->fetch(\PDO::FETCH_ASSOC | \PDO::FETCH_PROPS_LATE)['database()'];
         $sql = "SELECT table_name, column_name, column_default, is_nullable, data_type, column_type, column_key, extra
                 FROM information_schema.columns
                 WHERE table_schema = '{$dbName}' AND table_name = '{$this->tableNameDef($table)->table}'";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
-        $columns = $stmt->fetchAll(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, 'StdClass');
+        $columns = $stmt->fetchAll(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, 'StdClass');
         return new MySqlTableMeta($columns);
     }
 
@@ -312,8 +295,7 @@ class MySqlBuilder implements SqlBuilderInterface
      * @param string $table the table name with an alias
      * @return object an object with two attributes type and alias
      */
-    protected function tableNameDef($table)
-    {
+    protected function tableNameDef($table) {
         $parts = explode(' ', $table);
         $tableDefinition['table'] = $parts[0];
         $tableDefinition['alias'] = (count($parts) == 1) ? $tableDefinition['table'] : $parts[1];

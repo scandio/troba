@@ -7,8 +7,8 @@ use troba\Util\StringUtils;
 /**
  * Classic naming conventions for troba\EQM
  */
-class ClassicConventionHandler implements ConventionHandlerInterface
-{
+class ClassicConventionHandler implements ConventionHandlerInterface {
+
     /**
      * Converts a camelCased class name to a underscored table name
      *
@@ -17,8 +17,7 @@ class ClassicConventionHandler implements ConventionHandlerInterface
      *
      * @return string MUST return a tuple table name blank alias name
      */
-    public function tableName($className, $tableName = null)
-    {
+    public function tableName($className, $tableName = null) {
         return ($tableName) ? $tableName . ' ' . $className :
             StringUtils::camelCaseTo($className, '_') . ' ' . $className;
     }

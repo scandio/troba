@@ -2,8 +2,8 @@
 
 namespace troba\EQM;
 
-interface TableMetaInterface
-{
+interface TableMetaInterface {
+
     /**
      * @param \StdClass[] $data
      */

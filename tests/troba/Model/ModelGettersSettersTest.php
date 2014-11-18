@@ -8,8 +8,8 @@ use troba\Model\Getters;
 use troba\Model\Persisters;
 use troba\Model\Setters;
 
-class Company
-{
+class Company {
+
     use Getters;
     use Setters;
     use Finders;
@@ -20,8 +20,8 @@ class Company
     public $remark;
 }
 
-class Project
-{
+class Project {
+
     use Getters;
     use Setters;
     use Finders;
@@ -32,49 +32,41 @@ class Project
     protected $name;
     protected $value;
 
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
-    public function getCompanyId()
-    {
+    public function getCompanyId() {
         return $this->companyId;
     }
 
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 
-    public function setId($id)
-    {
+    public function setId($id) {
         $this->id = $id;
     }
 
-    public function setCompanyId($companyId)
-    {
+    public function setCompanyId($companyId) {
         $this->companyId = $companyId;
     }
 
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
     }
 
-    public function setValue($value)
-    {
+    public function setValue($value) {
         $this->value = $value;
     }
 }
 
-class ProjectActivity
-{
+class ProjectActivity {
+
     use Getters;
     use Setters;
     use Finders;
@@ -84,29 +76,25 @@ class ProjectActivity
     public $projectId;
     public $name;
 
-    public function getProject()
-    {
+    public function getProject() {
         return Project::find($this->projectId);
     }
 
-    public function getSenseless($args = [])
-    {
+    public function getSenseless($args = []) {
         return 'senseless_' . $args[0];
     }
 }
 
-class ACompany
-{
+class ACompany {
 
     use Setters;
 
     private $__table = "Company";
 }
 
-class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
-{
-    public function testDefault()
-    {
+class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase {
+
+    public function testDefault() {
         $c = new Company();
         $c->name = 'Model Getter Setter Company';
         $c->save();
@@ -114,8 +102,7 @@ class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($c->name, 'Model Getter Setter Company');
     }
 
-    public function testProtected()
-    {
+    public function testProtected() {
         $c = Company::findByName('Model Getter Setter Company')->one();
         $p = new Project();
         $p->id = 'PROJECT_' . $c->id;
@@ -128,8 +115,7 @@ class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($p->name, $p2->name);
     }
 
-    public function testAnyRelation()
-    {
+    public function testAnyRelation() {
         $p = Project::findByName('Model Getter Setter Project')->one();
         $pa = new ProjectActivity();
         $pa->id = 100;
@@ -143,8 +129,7 @@ class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($pa->senseless('value'), 'senseless_value');
     }
 
-    public function testNonExisting()
-    {
+    public function testNonExisting() {
         try {
             $p = new Project();
             $p->nonExisting();
@@ -153,8 +138,7 @@ class ModelGettersSettersTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testPrivateException()
-    {
+    public function testPrivateException() {
         $c = new ACompany();
         try {
             $c->name = 'abc';
