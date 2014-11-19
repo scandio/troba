@@ -27,7 +27,7 @@ $company = Company::query()->where('id = ?', 1)->one(); // retrieves the record 
 $result = Company::query()->all(); // retrieves all records as a ResultSet from table company
 
 $result = Company::query() // inner join query
-    ->innerJoin(new Project(), 'Company.id = Project.companyId')
+    ->innerJoin(Project::class, 'Company.id = Project.companyId')
     ->where('Project.name LIKE :name', ['name' => '%PRO%'])
     ->result();
 ```

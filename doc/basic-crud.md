@@ -73,12 +73,12 @@ with namespaces you have to use them. The use statement have no effect.
 $c = EQM::queryByPrimary('Your\\Namespace\\Company', 34);
 ```
 
-If you don't like use long class names you're allowed to use an instance instead.
+If you don't like use long class names as strings you're allowed to use an class instead.
 
 ```php
 use \Your\Namespace\Company;
 
-$c = EQM::queryByPrimary(new Company(), 34);
+$c = EQM::queryByPrimary(Company::class, 34);
 ```
 
 It's cool - isn't it?
@@ -98,7 +98,7 @@ EQM::update($c);
 To delete an entity you call the `EQM::delete()` method.
 
 ```php
-$c = EQM::queryByPrimary(new Company(), 34);
+$c = EQM::queryByPrimary(Company::class, 34);
 EQM::delete($c);
 ```
 
