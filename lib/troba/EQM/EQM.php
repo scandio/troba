@@ -128,7 +128,6 @@ class EQM extends PDOWrapper {
         $tableMeta = static::tableMeta(get_class($object));
         $dataParams = static::objectTableData($object, 'auto_increment');
         $sql = static::$sqlBuilder[static::$activeConnection]->insert(static::tableName(get_class($object)), $dataParams);
-        EQM::logger()->info($sql);
         $result = static::nativeExecute($sql, $dataParams, $tableMeta->hasAutoIncrement());
         if ($result) {
             if ($tableMeta->hasAutoIncrement()) {
@@ -208,10 +207,10 @@ class EQM extends PDOWrapper {
      * the parameters of the object will be used if not the value will be used
      *
      * @param string $className
-     * @param string|object $params
+     * @param string|object|array $params
      * @param string $prefix
      * @throws EQMException
-     * @return object|string the result contains a query and a params parameter
+     * @return object the result contains a query and a params parameter
      */
     protected static function primaryQuery($className, $params = null, $prefix = '') {
         $query = '';
