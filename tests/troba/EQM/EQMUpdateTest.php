@@ -3,157 +3,154 @@
 use troba\EQM\EQM;
 use troba\EQM\EQMException;
 
-class EQMUpdateTest extends PHPUnit_Framework_TestCase
-{
-    public function testUpdateDefault()
-    {
+class EQMUpdateTest extends PHPUnit_Framework_TestCase {
+
+    public function testUpdateDefault() {
         $c = EQM::queryByArray([
-            'entity' => new AnotherCompany(),
+            'entity' => AnotherCompany::class,
             'query' => 'id = ?',
             'params' => CNT_COMPANY + 1
         ])->one();
         $c->remark = $c->remark . ' no from testUpdate(AnotherCompany)';
         EQM::update($c);
         $this->assertEquals($c->remark, EQM::queryByArray([
-            'entity' => new AnotherCompany(),
+            'entity' => AnotherCompany::class,
             'query' => 'id = ?',
             'params' => $c->id
         ])->one()->remark);
 
         $c = EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'id = ?',
             'params' => CNT_COMPANY + 2
         ])->one();
         $c->remark = $c->remark . ' no from testUpdate(Company)';
         EQM::update($c);
         $this->assertEquals($c->remark, EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'id = ?',
             'params' => $c->id
         ])->one()->remark);
 
         $p = EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'id = ?',
             'params' => $c->id . '_PROJECT'
         ])->one();
         $p->name = $p->name . ' from testUpdate(Project)';
         EQM::update($p);
         $this->assertEquals($p->name, EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'id = ?',
             'params' => $p->id
         ])->one()->name);
 
         $pa = EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [999, $p->id]
         ])->one();
         $pa->name = $pa->name . ' from testUpdate(ProjectActivity)';
         EQM::update($pa);
         $this->assertEquals($pa->name, EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
         ])->one()->name);
     }
 
-    public function testUpdateDefaultWithNameSpace()
-    {
+    public function testUpdateDefaultWithNameSpace() {
         $c = EQM::queryByArray([
-            'entity' => new Bootstrap\AnotherCompany(),
+            'entity' => Bootstrap\AnotherCompany::class,
             'query' => 'id = ?',
             'params' => CNT_COMPANY + 3
         ])->one();
         $c->remark = $c->remark . ' no from testUpdate(AnotherCompany)';
         EQM::update($c);
         $this->assertEquals($c->remark, EQM::queryByArray([
-            'entity' => new Bootstrap\AnotherCompany(),
+            'entity' => Bootstrap\AnotherCompany::class,
             'query' => 'id = ?',
             'params' => $c->id
         ])->one()->remark);
 
         $c = EQM::queryByArray([
-            'entity' => new Bootstrap\Company(),
+            'entity' => Bootstrap\Company::class,
             'query' => 'id = ?',
             'params' => CNT_COMPANY + 4
         ])->one();
         $c->remark = $c->remark . ' no from testUpdate(Company)';
         EQM::update($c);
         $this->assertEquals($c->remark, EQM::queryByArray([
-            'entity' => new Bootstrap\Company(),
+            'entity' => Bootstrap\Company::class,
             'query' => 'id = ?',
             'params' => $c->id
         ])->one()->remark);
 
         $p = EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'id = ?',
             'params' => $c->id . '_PROJECT'
         ])->one();
         $p->name = $p->name . ' from testUpdate(Project)';
         EQM::update($p);
         $this->assertEquals($p->name, EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'id = ?',
             'params' => $p->id
         ])->one()->name);
 
         $pa = EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [999, $p->id]
         ])->one();
         $pa->name = $pa->name . ' from testUpdate(ProjectActivity)';
         EQM::update($pa);
         $this->assertEquals($pa->name, EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
         ])->one()->name);
     }
 
-    public function testUpdateClassic()
-    {
+    public function testUpdateClassic() {
         EQM::activateConnection('second_db');
 
         $c = EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'id = ?',
             'params' => CNT_COMPANY + 1
         ])->one();
         $c->remark = $c->remark . ' no from testUpdate(Company)';
         EQM::update($c);
         $this->assertEquals($c->remark, EQM::queryByArray([
-            'entity' => new Company(),
+            'entity' => Company::class,
             'query' => 'id = ?',
             'params' => $c->id
         ])->one()->remark);
 
         $p = EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'id = ?',
             'params' => $c->id . '_PROJECT'
         ])->one();
         $p->name = $p->name . ' from testUpdate(Project)';
         EQM::update($p);
         $this->assertEquals($p->name, EQM::queryByArray([
-            'entity' => new Project(),
+            'entity' => Project::class,
             'query' => 'id = ?',
             'params' => $p->id
         ])->one()->name);
 
         $pa = EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [999, $p->id]
         ])->one();
         $pa->name = $pa->name . ' from testUpdate(ProjectActivity)';
         EQM::update($pa);
         $this->assertEquals($pa->name, EQM::queryByArray([
-            'entity' => new ProjectActivity(),
+            'entity' => ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
         ])->one()->name);
@@ -161,45 +158,44 @@ class EQMUpdateTest extends PHPUnit_Framework_TestCase
         EQM::activateConnection('second_db');
     }
 
-    public function testUpdateClassicWithNamespace()
-    {
+    public function testUpdateClassicWithNamespace() {
         EQM::activateConnection('second_db');
 
         $c = EQM::queryByArray([
-            'entity' => new Bootstrap\Company(),
+            'entity' => Bootstrap\Company::class,
             'query' => 'id = ?',
             'params' => CNT_COMPANY + 1
         ])->one();
         $c->remark = $c->remark . ' no from testUpdate(Company)';
         EQM::update($c);
         $this->assertEquals($c->remark, EQM::queryByArray([
-            'entity' => new Bootstrap\Company(),
+            'entity' => Bootstrap\Company::class,
             'query' => 'id = ?',
             'params' => $c->id
         ])->one()->remark);
 
         $p = EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'id = ?',
             'params' => $c->id . '_PROJECT'
         ])->one();
         $p->name = $p->name . ' from testUpdate(Project)';
         EQM::update($p);
         $this->assertEquals($p->name, EQM::queryByArray([
-            'entity' => new Bootstrap\Project(),
+            'entity' => Bootstrap\Project::class,
             'query' => 'id = ?',
             'params' => $p->id
         ])->one()->name);
 
         $pa = EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [999, $p->id]
         ])->one();
         $pa->name = $pa->name . ' from testUpdate(ProjectActivity)';
         EQM::update($pa);
         $this->assertEquals($pa->name, EQM::queryByArray([
-            'entity' => new Bootstrap\ProjectActivity(),
+            'entity' => Bootstrap\ProjectActivity::class,
             'query' => 'id = ? AND projectId = ?',
             'params' => [$pa->id, $p->id]
         ])->one()->name);
@@ -207,8 +203,7 @@ class EQMUpdateTest extends PHPUnit_Framework_TestCase
         EQM::activateConnection();
     }
 
-    public function testUpdateError()
-    {
+    public function testUpdateError() {
         $c = new Company();
         try {
             EQM::update($c);
@@ -219,5 +214,4 @@ class EQMUpdateTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($r);
 
     }
-
 }

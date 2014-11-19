@@ -10,7 +10,7 @@ There are three possibilities to query entities.
 
 ```php
 $companies = EQM::queryByArray([
-    'entity' => new Company(),
+    'entity' => Company::class,
     'query' => 'name = :name',
     'params' => ['name' => 'Scandio GmbH']
 ]);
@@ -30,7 +30,7 @@ If you want to fetch all entities in an array use the `all()` method.
 
 ```php
 $companies = EQM::queryByArray([
-    'entity' => new Company(),
+    'entity' => Company::class,
     'query' => 'name = :name',
     'params' => ['name' => 'Scandio GmbH']
 ])->all();

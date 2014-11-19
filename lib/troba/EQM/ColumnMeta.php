@@ -2,8 +2,8 @@
 
 namespace troba\EQM;
 
-class ColumnMeta
-{
+class ColumnMeta {
+
     /**
      * @var string column name
      */
@@ -48,8 +48,7 @@ class ColumnMeta
      * @param string $key
      * @param string $extra
      */
-    public function __construct($name, $default, $nullable, $dataType, $columnType, $key, $extra)
-    {
+    public function __construct($name, $default, $nullable, $dataType, $columnType, $key, $extra) {
         $this->name = $name;
         $this->default = $default;
         $this->nullable = $nullable;
@@ -62,16 +61,14 @@ class ColumnMeta
     /**
      * @return bool true if the column is a primary key and otherwise false
      */
-    public function isPrimary()
-    {
+    public function isPrimary() {
         return ($this->key == 'PRI');
     }
 
     /**
      * @return bool true if the column has a auto increment flaf and otherwise false
      */
-    public function isAutoIncrement()
-    {
+    public function isAutoIncrement() {
         return ($this->extra == 'auto_increment');
     }
 }

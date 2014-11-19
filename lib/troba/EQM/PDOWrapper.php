@@ -8,8 +8,8 @@ use Psr\Log\NullLogger;
 /**
  * Manage all PDO requests and settings
  */
-class PDOWrapper
-{
+class PDOWrapper {
+
     /**
      * Psr-3 logger object
      */
@@ -49,8 +49,7 @@ class PDOWrapper
      *
      * @throws EQMException
      */
-    public static function initialize($pdo, $config = [], $connectionName = 'default')
-    {
+    public static function initialize($pdo, $config = [], $connectionName = 'default') {
         if ($pdo instanceof \PDO) {
             static::$db[$connectionName] = $pdo;
         } else {
@@ -70,8 +69,7 @@ class PDOWrapper
      * @static
      */
     public
-    static function begin()
-    {
+    static function begin() {
         static::$db[static::$activeConnection]->beginTransaction();
     }
 
@@ -80,8 +78,7 @@ class PDOWrapper
      *
      * @static
      */
-    public static function commit()
-    {
+    public static function commit() {
         static::$db[static::$activeConnection]->commit();
     }
 
@@ -90,8 +87,7 @@ class PDOWrapper
      *
      * @static
      */
-    public static function rollBack()
-    {
+    public static function rollBack() {
         static::$db[static::$activeConnection]->rollBack();
     }
 
@@ -103,8 +99,7 @@ class PDOWrapper
      *
      * @param string $connectionName optional the name of the connection
      */
-    public static function activateConnection($connectionName = null)
-    {
+    public static function activateConnection($connectionName = null) {
         if (!is_null($connectionName) && array_key_exists($connectionName, static::$db)) {
             static::$activeConnection = $connectionName;
         } else {
@@ -124,8 +119,7 @@ class PDOWrapper
      * @throws EQMException
      * @return bool|int return a boolean or the last inserted id
      */
-    public static function nativeExecute($sql, $params = [], $lastInsertedId = false)
-    {
+    public static function nativeExecute($sql, $params = [], $lastInsertedId = false) {
         if (!is_array($params)) $params = [$params];
         static::logger()->info($sql, $params);
         try {
@@ -151,8 +145,7 @@ class PDOWrapper
      * @throws EQMException
      * @return AbstractResultSet set of objects - the result class is defined in $objectOrClass
      */
-    public static function nativeQuery($objectOrClass, $sql = null, $params = [])
-    {
+    public static function nativeQuery($objectOrClass, $sql = null, $params = []) {
         $objectOrClass = (is_object($objectOrClass)) ? get_class($objectOrClass) : $objectOrClass;
         if (!is_array($params)) $params = [$params];
         static::logger()->info($sql, $params);
@@ -169,8 +162,7 @@ class PDOWrapper
     /**
      * @return LoggerInterface
      */
-    public static function logger()
-    {
+    public static function logger() {
         return static::$logger[static::$activeConnection];
     }
 }

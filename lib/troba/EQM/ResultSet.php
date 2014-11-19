@@ -2,8 +2,8 @@
 
 namespace troba\EQM;
 
-class ResultSet extends AbstractResultSet
-{
+class ResultSet extends AbstractResultSet {
+
     /**
      * @var \PDOStatement
      */
@@ -28,19 +28,17 @@ class ResultSet extends AbstractResultSet
      * @param \PDOStatement $pdoStatement
      * @param string $classname optional
      */
-    public function __construct($pdoStatement, $classname = '\StdClass')
-    {
+    public function __construct($pdoStatement, $classname = '\StdClass') {
         $this->pdoStatement = $pdoStatement;
         $this->count = $this->pdoStatement->rowCount();
         $this->classname = $classname;
-        $this->pdoStatement->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, $this->classname);
+        $this->pdoStatement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $this->classname);
     }
 
     /**
      * @throws EQMException
      */
-    public function rewind()
-    {
+    public function rewind() {
         if ($this->cursor > 0) {
             throw new EQMException('Rewind is not possible in a result set', 9005);
         }
@@ -50,16 +48,14 @@ class ResultSet extends AbstractResultSet
     /**
      * @return bool
      */
-    public function valid()
-    {
+    public function valid() {
         return $this->cursor <= $this->count;
     }
 
     /**
      * @return void
      */
-    public function next()
-    {
+    public function next() {
         $this->current = $this->pdoStatement->fetch();
         $this->cursor++;
     }
@@ -67,32 +63,28 @@ class ResultSet extends AbstractResultSet
     /**
      * @return object
      */
-    protected function getCurrent()
-    {
+    protected function getCurrent() {
         return $this->current;
     }
 
     /**
      * @return int
      */
-    public function key()
-    {
+    public function key() {
         return $this->cursor;
     }
 
     /**
      * @return int
      */
-    public function count()
-    {
+    public function count() {
         return $this->count;
     }
 
     /**
      * @return AbstractResultSet
      */
-    public function all()
-    {
+    public function all() {
         $this->cursor = $this->count;
         return new ResultSetArray($this->pdoStatement->fetchAll(), $this->classname);
     }
@@ -100,8 +92,7 @@ class ResultSet extends AbstractResultSet
     /**
      * @return object
      */
-    public function one()
-    {
+    public function one() {
         $this->next();
         return ($this->valid()) ? $this->current() : null;
     }

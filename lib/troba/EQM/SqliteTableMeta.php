@@ -2,13 +2,12 @@
 
 namespace troba\EQM;
 
-class SqliteTableMeta extends MySqlTableMeta
-{
+class SqliteTableMeta extends MySqlTableMeta {
+
     /**
      * @param \StdClass[] $columns
      */
-    public function __construct($columns)
-    {
+    public function __construct($columns) {
         foreach ($columns as $column) {
             $this->columns[$column->name] = new ColumnMeta($column->name, $column->dflt_value,
                 $column->notnull, $column->type, $column->type, $column->pk,

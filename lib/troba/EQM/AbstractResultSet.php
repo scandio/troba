@@ -2,8 +2,8 @@
 
 namespace troba\EQM;
 
-abstract class AbstractResultSet implements \Iterator, \Countable
-{
+abstract class AbstractResultSet implements \Iterator, \Countable {
+
     /**
      * @var array
      */
@@ -30,8 +30,7 @@ abstract class AbstractResultSet implements \Iterator, \Countable
      * @param array|string $keys
      * @param string $cardinality optional [many|one]
      */
-    public function relate($property, $resultSet, $keys, $cardinality = 'many')
-    {
+    public function relate($property, $resultSet, $keys, $cardinality = 'many') {
         $this->keys = $keys;
         $this->cardinality = $cardinality;
         foreach ($resultSet as $object) {
@@ -42,8 +41,7 @@ abstract class AbstractResultSet implements \Iterator, \Countable
     /**
      * @return object
      */
-    public function current()
-    {
+    public function current() {
         $current = $this->getCurrent();
         if (count($this->relations) > 0) {
             foreach ($this->relations as $property => $relation) {

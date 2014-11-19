@@ -2,8 +2,8 @@
 
 namespace troba\EQM;
 
-class EQM extends PDOWrapper
-{
+class EQM extends PDOWrapper {
+
     /**
      * Constant for inner join used by EQM::join()
      */
@@ -54,8 +54,7 @@ class EQM extends PDOWrapper
      *                      convention_handler (object), sql_builder (object)]
      * @param string $connectionName optional for multiple connections 'default' is the standard
      */
-    public static function initialize($pdo, $config = [], $connectionName = 'default')
-    {
+    public static function initialize($pdo, $config = [], $connectionName = 'default') {
         parent::initialize($pdo, $config, $connectionName);
         static::$metaCache[$connectionName] = [];
         if (array_key_exists(static::CONVENTION_HANDLER, $config)
@@ -85,8 +84,7 @@ class EQM extends PDOWrapper
      * @param string $connectionName
      * @return bool
      */
-    public static function isInitialized($connectionName = 'default')
-    {
+    public static function isInitialized($connectionName = 'default') {
         return !empty(static::$db[$connectionName]) && static::$db[$connectionName] instanceof \PDO;
     }
 
@@ -99,9 +97,8 @@ class EQM extends PDOWrapper
      * @param null|string $eliminate allowed value are primary and auto_increment
      * @return array
      */
-    protected static function objectTableData($object, $eliminate = null)
-    {
-        $tableMeta = static::tableMeta($object);
+    protected static function objectTableData($object, $eliminate = null) {
+        $tableMeta = static::tableMeta(get_class($object));
         $data = [];
         foreach ($tableMeta->getColumns() as $column) {
             if (property_exists($object, $column->name)) {
@@ -126,12 +123,11 @@ class EQM extends PDOWrapper
      * @param $object
      * @return null|object
      */
-    public static function insert($object)
-    {
+    public static function insert($object) {
         static::handleEvent('preInsert', $object);
-        $tableMeta = static::tableMeta($object);
+        $tableMeta = static::tableMeta(get_class($object));
         $dataParams = static::objectTableData($object, 'auto_increment');
-        $sql = static::$sqlBuilder[static::$activeConnection]->insert(static::tableName($object), $dataParams);
+        $sql = static::$sqlBuilder[static::$activeConnection]->insert(static::tableName(get_class($object)), $dataParams);
         $result = static::nativeExecute($sql, $dataParams, $tableMeta->hasAutoIncrement());
         if ($result) {
             if ($tableMeta->hasAutoIncrement()) {
@@ -151,12 +147,11 @@ class EQM extends PDOWrapper
      * @throws EQMException
      * @return bool
      */
-    public static function update($object)
-    {
+    public static function update($object) {
         static::handleEvent('preUpdate', $object);
         $dataParams = static::objectTableData($object, 'primary');
-        $primaryQuery = static::primaryQuery($object, null, 'eqm_key_');
-        static::updateQuery($object, $dataParams, $primaryQuery->query, $primaryQuery->params);
+        $primaryQuery = static::primaryQuery(get_class($object), $object, 'eqm_key_');
+        static::updateQuery(get_class($object), $dataParams, $primaryQuery->query, $primaryQuery->params);
         static::handleEvent('postUpdate', $object);
         return true;
     }
@@ -164,18 +159,17 @@ class EQM extends PDOWrapper
     /**
      * Updates one or more records by a query
      *
-     * @param object|string $objectOrClass the class/table to be modified
+     * @param string $className the class/table to be modified
      * @param $dataParams
      * @param string|null $query optional
      * @param array $queryParams
      * @return bool
      */
-    public static function updateQuery($objectOrClass, $dataParams, $query = null, $queryParams = [])
-    {
+    public static function updateQuery($className, $dataParams, $query = null, $queryParams = []) {
         $result = false;
         if ($dataParams) {
             $sql = static::$sqlBuilder[static::$activeConnection]
-                ->update(static::tableName($objectOrClass), $query, $dataParams);
+                ->update(static::tableName($className), $query, $dataParams);
             $result = static::nativeExecute($sql, array_merge($queryParams, $dataParams));
         }
         return $result;
@@ -187,11 +181,10 @@ class EQM extends PDOWrapper
      * @param $object
      * @return bool
      */
-    public static function delete($object)
-    {
+    public static function delete($object) {
         static::handleEvent('preDelete', $object);
-        $primaryQuery = static::primaryQuery($object);
-        $result = static::deleteQuery($object, $primaryQuery->query, $primaryQuery->params);
+        $primaryQuery = static::primaryQuery(get_class($object), $object);
+        $result = static::deleteQuery(get_class($object), $primaryQuery->query, $primaryQuery->params);
         static::handleEvent('postDelete', $object);
         return $result;
     }
@@ -199,43 +192,39 @@ class EQM extends PDOWrapper
     /**
      * delete a number of records by a query. there are no event handlers called in this methos
      *
-     * @param object|string $objectOrClass
+     * @param string $className
      * @param string|null $query optional
      * @param array $params
      * @return bool
      */
-    public static function deleteQuery($objectOrClass, $query = null, $params = [])
-    {
-        $sql = static::$sqlBuilder[static::$activeConnection]->delete(static::tableName($objectOrClass), $query);
+    public static function deleteQuery($className, $query = null, $params = []) {
+        $sql = static::$sqlBuilder[static::$activeConnection]->delete(static::tableName($className), $query);
         return static::nativeExecute($sql, $params);
     }
 
     /**
-     * Returns the primary query for an object or a class if $params is empty
-     * the parameters of the object will be used
+     * Returns the primary query for an object or a class if $params is a object
+     * the parameters of the object will be used if not the value will be used
      *
-     * @param object|string $objectOrClass
-     * @param $objectOrClass
-     * @param string|null $params optional
+     * @param string $className
+     * @param string|object|array $params
      * @param string $prefix
      * @throws EQMException
-     * @return object|string the result contains a query and a params parameter
+     * @return object the result contains a query and a params parameter
      */
-    protected static function primaryQuery($objectOrClass, $params = null, $prefix = '')
-    {
-        $objectOrClass = (is_string($objectOrClass)) ? new $objectOrClass() : $objectOrClass;
+    protected static function primaryQuery($className, $params = null, $prefix = '') {
         $query = '';
         $queryParams = [];
-        # TODO check for assoc arrays necessary
+        // TODO check for assoc arrays necessary
         $isNotAssoc = false;
-        if (!is_null($params) && !is_array($params)) {
+        if (!is_object($params) && !is_array($params)) {
             $params = [$params];
             $isNotAssoc = true;
         }
-        foreach (static::tableMeta($objectOrClass)->getPrimary() AS $primary) {
+        foreach (static::tableMeta($className)->getPrimary() AS $primary) {
             $query .= ((!empty($query)) ? ' AND ' : ' ') . $primary . ' = :' . $prefix . $primary;
-            if (is_null($params)) {
-                $queryParams[$prefix . $primary] = ObjectProperty::get($primary, $objectOrClass);
+            if (is_object($params)) {
+                $queryParams[$prefix . $primary] = ObjectProperty::get($primary, $params);
                 if ($queryParams[$prefix . $primary] == null) {
                     throw new EQMException('null is not a valid parameter for a primary query', 9003);
                 }
@@ -251,15 +240,14 @@ class EQM extends PDOWrapper
     /**
      * returns a entity object of the requested class by the primary keys of the table
      *
-     * @param object|string $objectOrClass
+     * @param string $className
      * @param array|mixed $params
      * @return object
      */
-    public static function queryByPrimary($objectOrClass, $params)
-    {
-        $primaryQuery = static::primaryQuery($objectOrClass, $params);
+    public static function queryByPrimary($className, $params) {
+        $primaryQuery = static::primaryQuery($className, $params);
         return static::queryByArray([
-            'entity' => $objectOrClass,
+            'entity' => $className,
             'query' => $primaryQuery->query,
             'params' => $primaryQuery->params
         ])->one(1);
@@ -268,12 +256,11 @@ class EQM extends PDOWrapper
     /**
      * Returns a chaining query object that calls queryByArray if result() is called
      *
-     * @param object|string $objectOrClass
+     * @param string $className
      * @return Query
      */
-    public static function query($objectOrClass = '\StdClass')
-    {
-        return new Query($objectOrClass);
+    public static function query($className = '\StdClass') {
+        return new Query($className);
     }
 
     /**
@@ -299,8 +286,7 @@ class EQM extends PDOWrapper
      * @param array $queryParams
      * @return AbstractResultSet
      */
-    public static function queryByArray($queryParams = [])
-    {
+    public static function queryByArray($queryParams = []) {
         # Converts the params array to local variables but instead of default values
         # it's necessary to check them all and set the defaults
         extract($queryParams);
@@ -328,36 +314,33 @@ class EQM extends PDOWrapper
      * Builds an object for a table join
      *
      * @param string $type one of the constants [EQM::INNER_JOIN|EQM::LEFT_JOIN|EQM::RIGHT_JOIN]
-     * @param object|string $toObjectOrClass object or class name optional with an alias
+     * @param string $className class name optional with an alias
      * @param string $query the query that combines two table with a join
      * @return object
      */
-    public static function join($type, $toObjectOrClass, $query)
-    {
-        return (object)['type' => $type, 'to' => static::tableName($toObjectOrClass), 'query' => $query];
+    public static function join($type, $className, $query) {
+        return (object)['type' => $type, 'to' => static::tableName($className), 'query' => $query];
     }
 
     /**
      * Return the table name for a class name including the alias the assigned covention
      * handler is used to get the table name
      *
-     * @param object|string $objectOrClass [<Classname>|<Classname> <alias>|object]
+     * @param string $className [<Classname>|<Classname> <alias>]
      * @return string table name blank alias name
      */
-    protected static function tableName($objectOrClass)
-    {
-        $class = (is_object($objectOrClass)) ? get_class($objectOrClass) : $objectOrClass;
-        $classParts = explode(' ', $class);
+    protected static function tableName($className) {
+        $classParts = explode(' ', $className);
         $alias = null;
+        $class = $classParts[0];
         if (count($classParts) > 1) {
-            $class = $classParts[0];
             $alias = $classParts[1];
         }
         $tmp = explode('\\', $class);
         $className = end($tmp);
         $table = null;
-        if (class_exists($class) && property_exists($objectOrClass, '__table'))
-            $table = ObjectProperty::get('__table', $objectOrClass);
+        if (class_exists($class) && property_exists($class, '__table'))
+            $table = ObjectProperty::getFromClass('__table', $class);
         $result = static::$conventionHandler[static::$activeConnection]->tableName($className, $table);
         if ($alias) {
             $tableParts = explode(' ', $result);
@@ -373,8 +356,7 @@ class EQM extends PDOWrapper
      * @param object $object
      * @return object
      */
-    protected static function handleEvent($event, $object)
-    {
+    protected static function handleEvent($event, $object) {
         if (method_exists($object, $event)) $object->{$event}();
     }
 
@@ -382,12 +364,11 @@ class EQM extends PDOWrapper
      * returns the table meta information as an object that implements TableMetaInterface
      * all read information will be cached in a metaCache variable but only for the single request
      *
-     * @param object|string $objectOrClass
+     * @param string $className
      * @return TableMetaInterface
      */
-    public static function tableMeta($objectOrClass)
-    {
-        $table = static::tableName($objectOrClass);
+    public static function tableMeta($className) {
+        $table = static::tableName($className);
         if (!array_key_exists($table, static::$metaCache[static::$activeConnection])) {
             $tableMeta = static::$sqlBuilder[static::$activeConnection]->tableMeta(
                 $table,

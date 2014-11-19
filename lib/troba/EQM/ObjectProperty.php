@@ -2,26 +2,40 @@
 
 namespace troba\EQM;
 
-class ObjectProperty
-{
+class ObjectProperty {
+
     /**
      * return the value of an object property. It does not matter whether the
      * property is public, private or protected
      *
      * @param string $property
-     * @param object|string $objectOrClass
+     * @param object $object
      * @return mixed
      */
-    public static function get($property, $objectOrClass)
-    {
+    public static function get($property, $object) {
         $result = null;
-        if (is_string($objectOrClass) && class_exists($objectOrClass))
-            $objectOrClass = new $objectOrClass();
-        $reflection = new \ReflectionObject($objectOrClass);
+        $reflection = new \ReflectionObject($object);
         if ($reflection->hasProperty($property)) {
             $property = $reflection->getProperty($property);
             $property->setAccessible(true);
-            return $property->getValue($objectOrClass);
+            $result = $property->getValue($object);
+        }
+        return $result;
+    }
+
+    /**
+     * returns the default value of a property in a class
+     *
+     * @param string $property
+     * @param string $className
+     * @return mixed
+     */
+    public static function getFromClass($property, $className) {
+        $result = null;
+        $reflection = new \ReflectionClass($className);
+        $properties = $reflection->getDefaultProperties();
+        if (array_key_exists($property, $properties)) {
+            $result = $properties[$property];
         }
         return $result;
     }
@@ -35,8 +49,7 @@ class ObjectProperty
      * @param $object
      * @return void
      */
-    public static function set($property, $value, $object)
-    {
+    public static function set($property, $value, $object) {
         $reflection = new \ReflectionObject($object);
         if ($reflection->hasProperty($property)) {
             $property = $reflection->getProperty($property);
