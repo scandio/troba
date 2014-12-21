@@ -330,7 +330,7 @@ class EQM extends PDOWrapper {
      * @return string table name blank alias name
      */
     protected static function tableName($className) {
-        $classParts = explode(' ', $className);
+        $classParts = explode(' ', is_object($className) ? get_class($className) : $className);
         $alias = null;
         $class = $classParts[0];
         if (count($classParts) > 1) {
@@ -339,8 +339,9 @@ class EQM extends PDOWrapper {
         $tmp = explode('\\', $class);
         $className = end($tmp);
         $table = null;
-        if (class_exists($class) && property_exists($class, '__table'))
+        if (class_exists($class) && property_exists($class, '__table')) {
             $table = ObjectProperty::getFromClass('__table', $class);
+        }
         $result = static::$conventionHandler[static::$activeConnection]->tableName($className, $table);
         if ($alias) {
             $tableParts = explode(' ', $result);
