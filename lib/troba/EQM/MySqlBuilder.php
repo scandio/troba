@@ -79,7 +79,11 @@ class MySqlBuilder implements SqlBuilderInterface {
         }
         $orderString = (!is_array($order)) ? $order : implode(', ', $order);
         $groupString = (!is_array($group)) ? $group : implode(', ', $group);
-        $fields = (empty($fields)) ? "{$table->alias}.*" : $fields;
+        if (empty($fields)) {
+            $fields = "{$table->alias}.*";
+        } else {
+            $fields = is_array($fields) ? implode(', ', $fields) : $fields;
+        }
         $limiter = null;
         if (!is_null($offset)) $limiter .= $offset . ', ';
         if (!is_null($limit)) $limiter .= $limit;
