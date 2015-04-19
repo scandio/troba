@@ -155,7 +155,7 @@ class PDOWrapper {
             return new ResultSet($stmt, $objectOrClass);
         } catch (\PDOException $e) {
             static::logger()->error($e->getMessage());
-            throw new EQMException($e->getMessage(), $e->getCode(), $e);
+            throw new EQMException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 
