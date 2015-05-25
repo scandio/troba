@@ -128,7 +128,7 @@ class PDOWrapper {
             return (($lastInsertedId) ? static::$db[static::$activeConnection]->lastInsertId() : $stmt->rowCount());
         } catch (\PDOException $e) {
             static::logger()->error($e->getMessage());
-            throw new EQMException($e->getMessage(), $e->getCode(), $e);
+            throw new EQMException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 
